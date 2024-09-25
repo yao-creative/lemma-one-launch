@@ -83,7 +83,7 @@ export default function Home() {
         <section ref={platformRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">A Platform for Athletes and Tournament Organizers</h3>
           <p className="text-base md:text-lg max-w-2xl">
-            LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro athletes by working together with organizers to create a more immersive tournament experience and scale their reach.
+            LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro athletes 
           </p>
         </section>
 
@@ -115,34 +115,32 @@ export default function Home() {
         <section ref={supportRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Support Us</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            We're realising a limited kit for the launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
+            We're realising a limited launch kit of 200 hoodies and shirts. Help us continue to grow and support semi-pro sports scene in South East Asia.
           </p>
           <a href="#" className="inline-block px-12 py-6 rounded-full text-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors duration-300">
             Visit Our Merch Store
           </a>
         </section>
 
-        <section ref={aboutRef} className="text-center flex flex-col items-center w-full max-w-4xl">
+        <section ref={aboutRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">About Us</h3>
-          <p className="text-base md:text-lg max-w-2xl mb-8">
-            In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a community and a possibility for the next generation to realize their dreams in sports.
+          <p className="text-base md:text-lg max-w-2xl">
+          In South East Asia, relative to the size of the populatio, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a community and a possibility for the next generation to realize their dreams in sports.
           </p>
-          <div className="w-full">
-            <h3 className="text-xl font-semibold mb-4 text-center">Yao</h3>
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-              <div className="relative w-32 h-32 flex-shrink-0">
-                <Image
-                  src="/about/profile.jpg"
-                  alt="Yao"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
-              </div>
-              <p className="text-sm opacity-70 text-left md:pr-4 max-w-prose">
-                Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed in the largest national tournament of Malaysia SUKMA when I was 17, which is a competition for the U21 age bracket nationally. After that, there was no notion of going pro for volleyball in Malaysia. I took a gamble and went abroad for a gap year in search of a dream. I ended up majoring in mathematics and computer science in university and five years later I'm back in this corner of the world to build things.
-              </p>
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold mb-4">Founder: Yao</h3>
+            <div className="relative w-32 h-32 mx-auto mb-4">
+              <Image
+                src="/about/profile.jpg"
+                alt="Yao - Founder"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
             </div>
+            <p className="text-sm opacity-70">
+              Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed the largest national tournament of Malaysia SUKMA when I was 17 which is a competition for the U21 age bracket nationally. After that there was no notion of going pro for volleyball in Malaysia. I took a gamble went abroad for a gap year in search of a dream. I ended up doing university and five years later I'm back in Malaysia to build things. 
+            </p>
           </div>
         </section>
 

@@ -115,7 +115,7 @@ export default function Home() {
         <section ref={supportRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Support Us</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            We're realising a limited kit for the launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
+            We're realising a limited launch kit of 200 hoodies and shirts. Help us continue to grow and support semi-pro sports scene in South East Asia.
           </p>
           <a href="#" className="inline-block px-12 py-6 rounded-full text-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors duration-300">
             Visit Our Merch Store
@@ -140,7 +140,7 @@ export default function Home() {
                 />
               </div>
               <p className="text-sm opacity-70 text-left md:pr-4 max-w-prose">
-                Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed in the largest national tournament of Malaysia SUKMA when I was 17, which is a competition for the U21 age bracket nationally. After that, there was no notion of going pro for volleyball in Malaysia. I took a gamble and went abroad for a gap year in search of a dream. I ended up majoring in mathematics and computer science in university and five years later I'm back in this corner of the world to build things.
+                Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed in the largest national tournament of Malaysia SUKMA when I was 17, which is a competition for the U21 age bracket nationally. After that, there was no notion of going pro for volleyball in Malaysia. I took a gamble and went abroad for a gap year in search of a dream. I ended up majoring in mathematics and computer sci and five years later I'm back in Malaysia to build things.
               </p>
             </div>
           </div>

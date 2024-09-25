@@ -115,7 +115,7 @@ export default function Home() {
         <section ref={supportRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Support Us</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            We're realising a limited kit for the launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
+            We're realising a limited kit for the early launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
           </p>
           <a href="#" className="inline-block px-12 py-6 rounded-full text-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors duration-300">
             Visit Our Merch Store

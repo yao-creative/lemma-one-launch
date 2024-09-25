@@ -77,20 +77,20 @@ export default function Home() {
       <main className="flex min-h-screen flex-col items-center justify-between p-24 space-y-24">
         <section className="text-center flex flex-col items-center">
           <h2 className="text-4xl md:text-5xl font-bold font-nike mb-4">LemmaOne</h2>
-          <p className="text-lg md:text-xl max-w-2xl">A space for semi-pro athletes. Growing the sport you love.</p>
+          <p className="text-lg md:text-xl max-w-2xl">A space for semi-pro athletes. Growing the sport we love.</p>
         </section>
 
         <section ref={platformRef} className="text-center flex flex-col items-center">
-          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">A Platform for Athletes and Tournament Organizers</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">A Platform for Semi-Pro Athletes and Tournament Organizers</h3>
           <p className="text-base md:text-lg max-w-2xl">
-            LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro athletes by working together with organizers to create a more immersive tournament experience and scale their reach.
+            LemmaOne connects athletes and organizers, providing a space to grow and showcase talent in the semi-professional sports world.
           </p>
         </section>
 
         <section ref={waitingListRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Join the Waiting List</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            By joining the waiting list we'll create an account for you upon soft launch.
+            By joining the waiting list we'll create an account for you upon soft launch
           </p>
           <div className="flex flex-col md:flex-row justify-center space-y-4 md:space-y-0 md:space-x-4">
             <button className="px-12 py-6 rounded-full text-xl font-semibold text-white bg-gradient-to-r from-orange-500 to-yellow-400 hover:from-orange-600 hover:to-yellow-500 transition-all duration-300 animate-pulse-subtle glow-button">
@@ -115,34 +115,32 @@ export default function Home() {
         <section ref={supportRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Support Us</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            We're realising a limited kit for the launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
+            Help us continue to grow and support semi-pro athletes by purchasing our merchandise.
           </p>
           <a href="#" className="inline-block px-12 py-6 rounded-full text-xl bg-white text-black font-semibold hover:bg-gray-200 transition-colors duration-300">
             Visit Our Merch Store
           </a>
         </section>
 
-        <section ref={aboutRef} className="text-center flex flex-col items-center w-full max-w-4xl">
+        <section ref={aboutRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">About Us</h3>
-          <p className="text-base md:text-lg max-w-2xl mb-8">
-            In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a community and a possibility for the next generation to realize their dreams in sports.
+          <p className="text-base md:text-lg max-w-2xl">
+            LemmaOne was founded by a group of passionate semi-pro athletes who saw the need for a dedicated platform to support and grow their community. Our mission is to provide resources, connections, and opportunities for athletes and organizers alike.
           </p>
-          <div className="w-full">
-            <h3 className="text-xl font-semibold mb-4 text-center">Yao</h3>
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
-              <div className="relative w-32 h-32 flex-shrink-0">
-                <Image
-                  src="/about/profile.jpg"
-                  alt="Yao"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
-                />
-              </div>
-              <p className="text-sm opacity-70 text-left md:pr-4 max-w-prose">
-                Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed in the largest national tournament of Malaysia SUKMA when I was 17, which is a competition for the U21 age bracket nationally. After that, there was no notion of going pro for volleyball in Malaysia. I took a gamble and went abroad for a gap year in search of a dream. I ended up majoring in mathematics and computer science in university and five years later I'm back in this corner of the world to build things.
-              </p>
+          <div className="mt-6">
+            <h3 className="text-xl font-semibold mb-4">Founder: Yao</h3>
+            <div className="relative w-32 h-32 mx-auto mb-4">
+              <Image
+                src="/about/profile.jpg"
+                alt="Yao - Founder"
+                layout="fill"
+                objectFit="cover"
+                className="rounded-full"
+              />
             </div>
+            <p className="text-sm opacity-70">
+              Hi my name is Yao. I'm from Malaysia and have been playing volleyball competitively since I was 14. I've competed the largest national tournament of Malaysia SUKMA when I was 17 which is a competition for the U21 age bracket nationally. In South East Asia, relative to the size of the  
+            </p>
           </div>
         </section>
 
