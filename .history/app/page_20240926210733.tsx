@@ -30,11 +30,7 @@ export default function Home() {
     },
     {
       question: "How can I join the waiting list?",
-      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section and filling the form. We'll create an account for you upon soft launch."
-    },
-    {
-      question: "What sports do you intend to add?",
-      answer: "Currently Badminton, Volleyball, Basketball, Football, and Futsal, but we're open to suggestions"
+      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section. We'll create an account for you upon soft launch."
     },
     {
       question: "What Features do we intend to add?",
@@ -43,20 +39,15 @@ export default function Home() {
     {
       question: "Feature Suggestions?",
       answer: "We're always looking for new ideas an feature improvements. Join the Discord to build a community with us."
-    },
-    {
-      question: "Have something to contribute?",
-      answer: "We're always looking for passionate web developers, designers, people with ideas, and passionate athletes to grow the community. You can contact us through our email at yytanwork@gmail.com"
     }
-
   ];
 
   return (
     <div className="min-h-screen bg-black text-white">
       <nav className="fixed top-0 left-0 right-0 z-10">
-        <div className="mx-auto max-w-6xl mt-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full flex justify-between items-center">
+        <div className="mx-auto max-w-6xl mt-4 px-4 sm:px-6 py-3 bg-white/10 backdrop-blur-md rounded-full flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Image src="/logo192.jpg" alt="LemmaOne Logo" width={32} height={32} />
+            <Image src="/logo192.png" alt="LemmaOne Logo" width={32} height={32} />
             <h1 className="text-2xl font-bold font-nike">LemmaOne</h1>
           </div>
           <div className="hidden md:flex space-x-4 items-center">
@@ -83,7 +74,11 @@ export default function Home() {
         )}
       </nav>
 
-      <main className="flex min-h-screen flex-col items-center justify-between p-4 md:p-24 space-y-16 md:space-y-24">
+      <main className="pt-24 flex flex-col items-center justify-between p-4 sm:p-6 md:p-24 space-y-16 sm:space-y-24">
+        <section className="text-center flex flex-col items-center w-full">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-nike mb-4">LemmaOne</h2>
+          <p className="text-base sm:text-lg md:text-xl max-w-2xl">A space for semi-pro athletes. Growing the sport you love.</p>
+      <main className="pt-24 flex flex-col items-center justify-between p-6 md:p-24 space-y-24">
         <section className="text-center flex flex-col items-center">
           <h2 className="text-4xl md:text-5xl font-bold font-nike mb-4">LemmaOne</h2>
           <p className="text-lg md:text-xl max-w-2xl">A space for semi-pro athletes. Growing the sport you love.</p>
@@ -131,7 +126,7 @@ export default function Home() {
           </a>
         </section>
 
-        <section ref={aboutRef} className="text-center flex flex-col items-center w-full max-w-4xl px-4 md:px-0">
+        <section ref={aboutRef} className="text-center flex flex-col items-center w-full max-w-4xl">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">About Us</h3>
           <p className="text-base md:text-lg max-w-2xl mb-8">
             In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a community and a possibility for the next generation to realize their dreams in sports.
@@ -143,9 +138,9 @@ export default function Home() {
                 <Image
                   src="/about/profile.jpg"
                   alt="Yao"
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-full"
+                  width={128}
+                  height={128}
+                  className="rounded-full object-cover"
                 />
               </div>
               <p className="text-sm opacity-70 text-left md:pr-4 max-w-prose">
@@ -155,7 +150,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section ref={faqRef} className="text-center flex flex-col items-center w-full px-4 md:px-0">
+        <section ref={faqRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-8">Frequently Asked Questions</h3>
           <div className="w-full max-w-2xl">
             {faqs.map((faq, index) => (

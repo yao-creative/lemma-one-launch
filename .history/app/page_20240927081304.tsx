@@ -30,11 +30,7 @@ export default function Home() {
     },
     {
       question: "How can I join the waiting list?",
-      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section and filling the form. We'll create an account for you upon soft launch."
-    },
-    {
-      question: "What sports do you intend to add?",
-      answer: "Currently Badminton, Volleyball, Basketball, Football, and Futsal, but we're open to suggestions"
+      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section. We'll create an account for you upon soft launch."
     },
     {
       question: "What Features do we intend to add?",

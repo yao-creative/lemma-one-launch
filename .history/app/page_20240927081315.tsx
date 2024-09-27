@@ -30,7 +30,7 @@ export default function Home() {
     },
     {
       question: "How can I join the waiting list?",
-      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section and filling the form. We'll create an account for you upon soft launch."
+      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section. We'll create an account for you upon soft launch."
     },
     {
       question: "What sports do you intend to add?",

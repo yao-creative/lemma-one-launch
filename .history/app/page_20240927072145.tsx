@@ -30,11 +30,7 @@ export default function Home() {
     },
     {
       question: "How can I join the waiting list?",
-      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section and filling the form. We'll create an account for you upon soft launch."
-    },
-    {
-      question: "What sports do you intend to add?",
-      answer: "Currently Badminton, Volleyball, Basketball, Football, and Futsal, but we're open to suggestions"
+      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section. We'll create an account for you upon soft launch."
     },
     {
       question: "What Features do we intend to add?",
@@ -43,12 +39,7 @@ export default function Home() {
     {
       question: "Feature Suggestions?",
       answer: "We're always looking for new ideas an feature improvements. Join the Discord to build a community with us."
-    },
-    {
-      question: "Have something to contribute?",
-      answer: "We're always looking for passionate web developers, designers, people with ideas, and passionate athletes to grow the community. You can contact us through our email at yytanwork@gmail.com"
     }
-
   ];
 
   return (
@@ -155,7 +146,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section ref={faqRef} className="text-center flex flex-col items-center w-full px-4 md:px-0">
+        <section ref={faqRef} className="text-center flex flex-col items-center">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-8">Frequently Asked Questions</h3>
           <div className="w-full max-w-2xl">
             {faqs.map((faq, index) => (

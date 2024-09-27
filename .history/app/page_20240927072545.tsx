@@ -30,11 +30,7 @@ export default function Home() {
     },
     {
       question: "How can I join the waiting list?",
-      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section and filling the form. We'll create an account for you upon soft launch."
-    },
-    {
-      question: "What sports do you intend to add?",
-      answer: "Currently Badminton, Volleyball, Basketball, Football, and Futsal, but we're open to suggestions"
+      answer: "You can join the waiting list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Waiting List' section. We'll create an account for you upon soft launch."
     },
     {
       question: "What Features do we intend to add?",
@@ -45,10 +41,9 @@ export default function Home() {
       answer: "We're always looking for new ideas an feature improvements. Join the Discord to build a community with us."
     },
     {
-      question: "Have something to contribute?",
-      answer: "We're always looking for passionate web developers, designers, people with ideas, and passionate athletes to grow the community. You can contact us through our email at yytanwork@gmail.com"
+      question: "Have something to con",
+      answer: "You can contact us at yytanwork@gmail.com"
     }
-
   ];
 
   return (
