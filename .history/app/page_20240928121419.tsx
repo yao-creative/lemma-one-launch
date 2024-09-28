@@ -4,9 +4,6 @@ import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { signUpWithGoogle, signUpWithFacebook, signUpWithPhone } from './lib/auth';
 import { ApplicationVerifier } from 'firebase/auth';
-import WaitListForm from './components/WaitListForm';
-import FAQSection from './components/FAQSection';
-import AboutSection from './components/AboutSection';
 
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -71,8 +68,7 @@ export default function Home() {
   const [showOrganizerForm, setShowOrganizerForm] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    sports: [] as string[],
-    otherSports: [] as string[], // Changed from otherSport to otherSports
+    sports: [] as string[], // Changed from 'sport' to 'sports' and made it an array
     interestLevel: '',
     features: '',
     interestedFeatures: [] as string[],
@@ -105,7 +101,8 @@ export default function Home() {
       setShowPlayerForm(false);
       setShowOrganizerForm(true);
     }
-    // Don't reset form data when switching between forms
+    // Reset form data when switching between forms
+    setFormData({ name: '', sports: [], interestLevel: '', features: '', interestedFeatures: [] });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -218,14 +215,108 @@ export default function Home() {
           </div>
 
           {(showPlayerForm || showOrganizerForm) && (
-            <WaitListForm
-              formData={formData}
-              setFormData={setFormData}
-              handleInputChange={handleInputChange}
-              handleSubmit={handleSubmit}
-              handleSignUp={handleSignUp}
-              showPlayerForm={showPlayerForm}
-            />
+            <div className="mt-8 w-full max-w-md">
+              <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder={showPlayerForm ? "Name" : "Organization Name"}
+                  className="w-full p-2 mb-4 bg-black/50 text-white rounded"
+                  required
+                />
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">Select Sports (Multiple)</label>
+                  <select
+                    name="sports"
+                    value={formData.sports}
+                    onChange={handleInputChange}
+                    className="w-full p-2 mb-4 bg-black/50 text-white rounded"
+                    multiple
+                    required
+                  >
+                    <option value="basketball">Basketball</option>
+                    <option value="football">Football</option>
+                    <option value="futsal">Futsal</option>
+                    <option value="badminton">Badminton</option>
+                    <option value="volleyball">Volleyball</option>
+                  </select>
+                  <p className="text-sm mt-2">Selected: {formData.sports.join(', ')}</p>
+                </div>
+                <select
+                  name="interestLevel"
+                  value={formData.interestLevel}
+                  onChange={handleInputChange}
+                  className="w-full p-2 mb-4 bg-black/50 text-white rounded"
+                  required
+                >
+                  <option value="">Select Interest Level</option>
+                  <option value="amateur">Amateur</option>
+                  <option value="competitive">Competitive</option>
+                  <option value="semi-pro">Semi-Pro</option>
+                  <option value="pro">Pro</option>
+                </select>
+                
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-2">Interested Features (Select multiple)</label>
+                  <div className="bg-black/50 rounded-lg p-4">
+                  <select
+                    name="interestedFeatures"
+                    value={formData.interestedFeatures}
+                    onChange={handleInputChange}
+                    className="w-full bg-transparent text-white"
+                    multiple
+                  >
+                    {showOrganizerForm ? (
+                      <>
+                        <option value="tournament hosting">Tournament Hosting</option>
+                        <option value="ticketing">Ticketing</option>
+                        <option value="tournament monetization">Tournament Monetization</option>
+                        <option value="merchandize sales">Merchandize Sales</option>
+                        <option value="in-tournament features and updates">In-Tournament Features and Updates</option>
+                        <option value="social media">Social Media</option>
+                        <option value="pre-tournament previews">Pre-Tournament Previews</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="social media">Social Media</option>
+                        <option value="pre-tournament previews">Pre-Tournament Previews</option>
+                        <option value="merchandize sales">Merchandize Sales</option>
+                        <option value="ticketing">Ticketing</option>
+                        <option value="in-tournament features and updates">In-Tournament Features and Updates</option>
+                        <option value="rankings">Rankings</option>
+                        <option value="tournament earnings">Tournament Earnings</option>
+                      </>
+                    )}
+                  </select>
+                  </div>
+                  <p className="text-sm mt-2">Selected: {formData.interestedFeatures.join(', ')}</p>
+                </div>
+                
+                <textarea
+                  name="features"
+                  value={formData.features}
+                  onChange={handleInputChange}
+                  placeholder="Any other features you'd like to see? (Optional)"
+                  className="w-full p-2 mb-4 bg-black/50 text-white rounded"
+                />
+                <div className="flex flex-col space-y-2">
+                  <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded">
+                    Sign up with Google
+                  </button>
+                  <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded">
+                    Sign up with Facebook
+                  </button>
+                  <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded">
+                    Sign up with Mobile
+                  </button>
+                </div>
+                <button type="submit" className="w-full mt-4 bg-purple-600 text-white p-2 rounded">
+                  Submit
+                </button>
+              </form>
+            </div>
           )}
         </section>
 
@@ -257,8 +348,59 @@ export default function Home() {
           </a>
         </section>
 
-        <AboutSection />
-        <FAQSection faqs={faqs} />
+        <section ref={aboutRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">About Us</h3>
+          <p className="text-base md:text-lg max-w-2xl mb-8">
+            In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a community and a possibility for the next generation to realize their dreams in competitive sports.
+          </p>
+          <div className="flex flex-col items-center w-full">
+            <h3 className="text-xl font-semibold mb-4 text-center">Yao</h3>
+            <div className="flex flex-col md:flex-row items-center md:items-start gap-4">
+              <div className="relative w-28 h-28 flex-shrink-0 mb-4 md:mb-0">
+                <Image
+                  src="/about/profile.jpg"
+                  alt="Yao"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-full"
+                />
+              </div>
+              <p className="text-sm opacity-70 text-center md:text-left md:pr-4 max-w-prose">
+                Hi my name is Yao. I've been playing volleyball competitively since I was 14. I've competed in the largest national tournament when I was 17. After that, the notion of going pro for sports was almost non-existent in my country. I took a gamble and went abroad for a gap year. I ended up majoring in mathematics and computer science in university and, five years later, I'm back in this corner of the world to build things.
+              </p>
+            </div>
+            <div className="flex flex-row items-center justify-center mt-4">
+              <a href="https://www.linkedin.com/in/yi-yao-tan-9719301a3/" className="flex items-center mx-2">
+                <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="hover:opacity-80" />
+              </a>
+              <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2">
+                <Image src="/icons/email.svg" alt="Email" width={24} height={24} className="hover:opacity-80" />
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <section ref={faqRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-8">Frequently Asked Questions</h3>
+          <div className="w-full max-w-2xl">
+            {faqs.map((faq, index) => (
+              <div key={index} className="mb-4">
+                <button
+                  className="flex justify-between items-center w-full text-left px-4 py-2 bg-gray-800 hover:bg-gray-700 transition-colors duration-300 rounded-lg"
+                  onClick={() => toggleFAQ(index)}
+                >
+                  <span className="text-lg font-semibold">{faq.question}</span>
+                  <span className="text-2xl">{openFAQ === index ? '−' : '+'}</span>
+                </button>
+                {openFAQ === index && (
+                  <div className="mt-2 px-4 py-2 bg-gray-900 rounded-lg">
+                    <p className="text-base">{faq.answer}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
       </main>
     </div>
   );
