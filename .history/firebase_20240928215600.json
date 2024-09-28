@@ -4,8 +4,8 @@
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      ".env.local"
+      "**/node_modules/**"
+      "*"
     ],
     "rewrites": [
       {
