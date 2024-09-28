@@ -233,7 +233,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <textarea
             value={additionalFeatures}
             onChange={(e) => setAdditionalFeatures(e.target.value)}
-            placeholder="Give us ideas we'll turn them into reality."
+            placeholder="G"
             className="w-full p-2 mb-2 bg-black/50 text-white rounded"
             rows={4}
           />
