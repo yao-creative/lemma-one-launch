@@ -36,7 +36,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
   const [tournamentLevels, setTournamentLevels] = useState<string[]>([]);
   const [regionalLevels, setRegionalLevels] = useState<string[]>([]);
   const [otherLevels, setOtherLevels] = useState<string[]>([]);
-  const [additionalFeatures, setAdditionalFeatures] = useState('');
 
   const toggleSport = (sport: string) => {
     setFormData(prevData => {
@@ -116,7 +115,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder={showPlayerForm ? "Name" : "Organizer/Organization Name"}
+          placeholder={showPlayerForm ? "Name" : "Organization Name"}
           className="w-full p-2 mb-4 bg-black/50 text-white rounded"
           required
         />
@@ -166,10 +165,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
+              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
-              'in-tournament features and updates', 'social media', 'pre-tournament previews', 'fan engagement'
+              'in-tournament features and updates', 'social media', 'pre-tournament previews'
             ]).map((feature) => (
               <button
                 key={feature}
@@ -188,7 +187,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Target Reach</label>
+          <label className="block text-sm font-medium mb-2">Select Re</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {['local', 'regional', 'national', 'international'].map((level) => (
               <button
@@ -205,11 +204,11 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Reach: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Select Levels</label>
+          <label className="block text-sm font-medium mb-2">Select Level</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {['amateur', 'semi-professional', 'professional'].map((level) => (
               <button
@@ -227,16 +226,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
             ))}
           </div>
           <p className="text-sm mt-2">Selected Other Levels: {otherLevels.join(', ')}</p>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Any other features you'd like to see? (Optional)</label>
-          <textarea
-            value={additionalFeatures}
-            onChange={(e) => setAdditionalFeatures(e.target.value)}
-            placeholder="Please specify any additional features..."
-            className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            rows={4}
-          />
         </div>
         <div className="flex flex-col space-y-2">
           <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded">

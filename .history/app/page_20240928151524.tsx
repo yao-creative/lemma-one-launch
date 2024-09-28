@@ -189,10 +189,10 @@ export default function Home() {
         <section ref={platformRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">A Platform for Athletes and Tournament Organizers</h3>
           <p className="text-base md:text-lg max-w-2xl mb-4">
-            Introducing an all-in-one sports tournament hosting platform. LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro levels by collaborating with organizers to create a more immersive tournament experience and scale their reach.
+            Introducing an all-in-one sports tournament hjost platform. LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro levels by collaborating with organizers to create a more immersive tournament experience and scale their reach.
           </p>
           <p className="text-base md:text-lg max-w-2xl font-bold">
-            We're also on a mission to make semi-pro sports a reality in South East Asia. We want to empower semi-pro athletes and tournaments.
+            We're also on a mission to make semi-pro sports a reality in South East Asia.
           </p>
         </section>
 

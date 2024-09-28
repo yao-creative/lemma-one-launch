@@ -116,7 +116,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder={showPlayerForm ? "Name" : "Organizer/Organization Name"}
+          placeholder={showPlayerForm ? "Name" : "Organization Name"}
           className="w-full p-2 mb-4 bg-black/50 text-white rounded"
           required
         />

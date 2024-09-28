@@ -192,7 +192,7 @@ export default function Home() {
             Introducing an all-in-one sports tournament hosting platform. LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro levels by collaborating with organizers to create a more immersive tournament experience and scale their reach.
           </p>
           <p className="text-base md:text-lg max-w-2xl font-bold">
-            We're also on a mission to make semi-pro sports a reality in South East Asia. We want to empower semi-pro athletes and tournaments.
+            We're also on a mission to make semi-pro sports a reality in South East Asia. We want to empower semi-pro at
           </p>
         </section>
 

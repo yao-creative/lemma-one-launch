@@ -116,7 +116,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder={showPlayerForm ? "Name" : "Organizer/Organization Name"}
+          placeholder={showPlayerForm ? "Name" : "Organization Name"}
           className="w-full p-2 mb-4 bg-black/50 text-white rounded"
           required
         />
@@ -166,7 +166,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
+              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan engagement'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews', 'fan engagement'

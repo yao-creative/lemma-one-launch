@@ -34,9 +34,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
   const [showOtherSports, setShowOtherSports] = useState(false);
   const [otherSportInput, setOtherSportInput] = useState('');
   const [tournamentLevels, setTournamentLevels] = useState<string[]>([]);
-  const [regionalLevels, setRegionalLevels] = useState<string[]>([]);
-  const [otherLevels, setOtherLevels] = useState<string[]>([]);
-  const [additionalFeatures, setAdditionalFeatures] = useState('');
 
   const toggleSport = (sport: string) => {
     setFormData(prevData => {
@@ -62,11 +59,17 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
 
   const toggleTournamentLevel = (level: string) => {
     setTournamentLevels(prevLevels => {
-      // Ensure at least one of amateur, semi-professional, or professional is selected
+      const isRegional = level === 'regional';
       const isAmateur = level === 'amateur';
       const isSemiProfessional = level === 'semi-professional';
       const isProfessional = level === 'professional';
 
+      // Ensure regional level is included
+      if (isRegional) {
+        return [...new Set([...prevLevels, level])]; // Add regional if not already present
+      }
+
+      // Ensure at least one of amateur, semi-professional, or professional is selected
       if (isAmateur || isSemiProfessional || isProfessional) {
         const hasRegional = prevLevels.includes('regional');
         if (!hasRegional) {
@@ -79,22 +82,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
 
       return prevLevels; // Return unchanged if not a valid level
     });
-  };
-
-  const toggleRegionalLevel = (level: string) => {
-    setRegionalLevels(prevLevels => 
-      prevLevels.includes(level) 
-        ? prevLevels.filter(l => l !== level) 
-        : [...prevLevels, level]
-    );
-  };
-
-  const toggleOtherLevel = (level: string) => {
-    setOtherLevels(prevLevels => 
-      prevLevels.includes(level) 
-        ? prevLevels.filter(l => l !== level) 
-        : [...prevLevels, level]
-    );
   };
 
   const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -116,7 +103,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           name="name"
           value={formData.name}
           onChange={handleInputChange}
-          placeholder={showPlayerForm ? "Name" : "Organizer/Organization Name"}
+          placeholder={showPlayerForm ? "Name" : "Organization Name"}
           className="w-full p-2 mb-4 bg-black/50 text-white rounded"
           required
         />
@@ -166,10 +153,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
+              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
-              'in-tournament features and updates', 'social media', 'pre-tournament previews', 'fan engagement'
+              'in-tournament features and updates', 'social media', 'pre-tournament previews'
             ]).map((feature) => (
               <button
                 key={feature}
@@ -188,15 +175,15 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Target Reach</label>
+          <label className="block text-sm font-medium mb-2">Select Tournament Levels (Must include Regional and one of Amateur, Semi-Professional, or Professional)</label>
           <div className="flex flex-wrap gap-2 mb-2">
-            {['local', 'regional', 'national', 'international'].map((level) => (
+            {['regional', 'amateur', 'semi-professional', 'professional'].map((level) => (
               <button
                 key={level}
                 type="button"
-                onClick={() => toggleRegionalLevel(level)}
+                onClick={() => toggleTournamentLevel(level)}
                 className={`px-3 py-1 rounded ${
-                  regionalLevels.includes(level)
+                  tournamentLevels.includes(level)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -205,38 +192,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Select Levels</label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {['amateur', 'semi-professional', 'professional'].map((level) => (
-              <button
-                key={level}
-                type="button"
-                onClick={() => toggleOtherLevel(level)}
-                className={`px-3 py-1 rounded ${
-                  otherLevels.includes(level)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {level}
-              </button>
-            ))}
-          </div>
-          <p className="text-sm mt-2">Selected Other Levels: {otherLevels.join(', ')}</p>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Any other features you'd like to see? (Optional)</label>
-          <textarea
-            value={additionalFeatures}
-            onChange={(e) => setAdditionalFeatures(e.target.value)}
-            placeholder="Please specify any additional features..."
-            className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            rows={4}
-          />
+          <p className="text-sm mt-2">Selected Levels: {tournamentLevels.join(', ')}</p>
         </div>
         <div className="flex flex-col space-y-2">
           <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded">
