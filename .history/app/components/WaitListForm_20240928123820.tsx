@@ -59,10 +59,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
   const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && otherSportInput.trim() !== '' && formData.sports.length < 3) {
       e.preventDefault();
-      setFormData(prevData => {
-        const newSports = [...prevData.sports, otherSportInput.trim()].slice(0, 3);
-        return { ...prevData, sports: newSports };
-      });
+      setFormData(prevData => ({
+        ...prevData,
+        sports: [...prevData.sports, otherSportInput.trim()].slice(0, 3)
+      }));
       setOtherSportInput('');
     }
   };
@@ -82,13 +82,13 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Select Sports (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
-            {['basketball', 'football', 'futsal', 'badminton', 'volleyball'].map((sport) => (
+            {['basketball', 'football', 'futsal', 'badminton', 'volleyball', 'Other'].map((sport) => (
               <button
                 key={sport}
                 type="button"
-                onClick={() => toggleSport(sport)}
+                onClick={() => sport === 'Other' ? setShowOtherSports(!showOtherSports) : toggleSport(sport)}
                 className={`px-3 py-1 rounded ${
-                  formData.sports.includes(sport)
+                  formData.sports.includes(sport) || (sport === 'Other' && showOtherSports)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -96,17 +96,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
                 {sport}
               </button>
             ))}
-            {formData.sports.length < 3 && (
-              <button
-                type="button"
-                onClick={() => setShowOtherSports(!showOtherSports)}
-                className={`px-3 py-1 rounded ${
-                  showOtherSports ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
           {showOtherSports && (
             <input
@@ -114,7 +103,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
               value={otherSportInput}
               onChange={(e) => setOtherSportInput(e.target.value)}
               onKeyDown={handleOtherSportKeyDown}
-              placeholder="Enter other sport and press Enter to add"
+              placeholder="Enter other sport and press Enter"
               className="w-full p-2 mb-2 bg-black/50 text-white rounded"
             />
           )}
@@ -125,7 +114,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
+              'in-tournament features and updates', 'rankings', 'tournament earnings'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews'

@@ -59,10 +59,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
   const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && otherSportInput.trim() !== '' && formData.sports.length < 3) {
       e.preventDefault();
-      setFormData(prevData => {
-        const newSports = [...prevData.sports, otherSportInput.trim()].slice(0, 3);
-        return { ...prevData, sports: newSports };
-      });
+      setFormData(prevData => ({
+        ...prevData,
+        sports: [...prevData.sports, otherSportInput.trim()].slice(0, 3)
+      }));
       setOtherSportInput('');
     }
   };
@@ -82,13 +82,13 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Select Sports (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
-            {['basketball', 'football', 'futsal', 'badminton', 'volleyball'].map((sport) => (
+            {['basketball', 'football', 'futsal', 'badminton', 'volleyball', 'Other'].map((sport) => (
               <button
                 key={sport}
                 type="button"
-                onClick={() => toggleSport(sport)}
+                onClick={() => sport === 'Other' ? setShowOtherSports(!showOtherSports) : toggleSport(sport)}
                 className={`px-3 py-1 rounded ${
-                  formData.sports.includes(sport)
+                  formData.sports.includes(sport) || (sport === 'Other' && showOtherSports)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -96,17 +96,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
                 {sport}
               </button>
             ))}
-            {formData.sports.length < 3 && (
-              <button
-                type="button"
-                onClick={() => setShowOtherSports(!showOtherSports)}
-                className={`px-3 py-1 rounded ${
-                  showOtherSports ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
           {showOtherSports && (
             <input
@@ -114,7 +103,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
               value={otherSportInput}
               onChange={(e) => setOtherSportInput(e.target.value)}
               onKeyDown={handleOtherSportKeyDown}
-              placeholder="Enter other sport and press Enter to add"
+              placeholder="Enter other sport and press Enter"
               className="w-full p-2 mb-2 bg-black/50 text-white rounded"
             />
           )}
@@ -125,26 +114,46 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
+          <label className="block text-sm font-medium mb-2">Select Sports (Multiple)</label>
+          <div className="bg-black/50 rounded-lg p-4">
+            {['basketball', 'football', 'futsal', 'badminton', 'volleyball'].map((sport) => (
+              <div key={sport} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id={sport}
+                  checked={formData.sports.includes(sport)}
+                  onChange={() => toggleSport(sport)}
+                  className="mr-2"
+                />
+                <label htmlFor={sport} className="text-white">{sport}</label>
+              </div>
+            ))}
+          </div>
+          <p className="text-sm mt-2">Selected: {formData.sports.join(', ')}</p>
+        </div>
+        <div className="mb-4">
+          <label className="block text-sm font-medium mb-2">Interested Features (Select multiple)</label>
+          <div className="bg-black/50 rounded-lg p-4">
+            {(showPlayerForm ? [
+              'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
+              'in-tournament features and updates', 'rankings', 'tournament earnings'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews'
             ]).map((feature) => (
-              <button
-                key={feature}
-                type="button"
-                onClick={() => toggleFeature(feature)}
-                className={`px-3 py-1 rounded ${
-                  formData.interestedFeatures.includes(feature)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {feature}
-              </button>
+              <div key={feature} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id={feature}
+                  checked={formData.interestedFeatures.includes(feature)}
+                  onChange={() => toggleFeature(feature)}
+                  className="mr-2"
+                />
+                <label htmlFor={feature} className="text-white">{feature}</label>
+              </div>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
+          <p className="text-sm mt-2">Selected: {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="flex flex-col space-y-2">
           <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded">

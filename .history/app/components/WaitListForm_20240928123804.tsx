@@ -50,21 +50,60 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
       if (prevData.interestedFeatures.includes(feature)) {
         return { ...prevData, interestedFeatures: prevData.interestedFeatures.filter(f => f !== feature) };
       } else if (prevData.interestedFeatures.length < 3) {
-        return { ...prevData, interestedFeatures: [...prevData.interestedFeatures, feature] };
+  const handleSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && sportInput.trim() !== '' && formData.sports.length < 3) {
+      e.preventDefault();
+      setFormData(prevData => ({
+        ...prevData,
+        sports: [...prevData.sports, sportInput.trim()].slice(0, 3)
+      }));
+      setSportInput('');
+    }
+  };
+
+  const handleFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && featureInput.trim() !== '' && formData.interestedFeatures.length < 3) {
+      e.preventDefault();
+      setFormData(prevData => ({
+        ...prevData,
+        interestedFeatures: [...prevData.interestedFeatures, featureInput.trim()].slice(0, 3)
+      }));
+      setFeatureInput('');
+    }
+  };
+
+  const removeSport = (sport: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      sports: prevData.sports.filter(s => s !== sport)
+    }));
+  };
+
+  const removeFeature = (feature: string) => {
+    setFormData(prevData => ({
+      ...prevData,
+      interestedFeatures: prevData.interestedFeatures.filter(f => f !== feature)
+    }));
+  };
+
+  const toggleSport = (sport: string) => {
+    setFormData(prevData => {
+      if (prevData.sports.includes(sport)) {
+        return { ...prevData, sports: prevData.sports.filter(s => s !== sport) };
+      } else {
+        return { ...prevData, sports: [...prevData.sports, sport] };
       }
-      return prevData;
     });
   };
 
-  const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && otherSportInput.trim() !== '' && formData.sports.length < 3) {
-      e.preventDefault();
-      setFormData(prevData => {
-        const newSports = [...prevData.sports, otherSportInput.trim()].slice(0, 3);
-        return { ...prevData, sports: newSports };
-      });
-      setOtherSportInput('');
-    }
+  const toggleFeature = (feature: string) => {
+    setFormData(prevData => {
+      if (prevData.interestedFeatures.includes(feature)) {
+        return { ...prevData, interestedFeatures: prevData.interestedFeatures.filter(f => f !== feature) };
+      } else {
+        return { ...prevData, interestedFeatures: [...prevData.interestedFeatures, feature] };
+      }
+    });
   };
 
   return (
@@ -80,71 +119,46 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           required
         />
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Select Sports (Max 3)</label>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <label className="block text-sm font-medium mb-2">Select Sports (Multiple)</label>
+          <div className="bg-black/50 rounded-lg p-4">
             {['basketball', 'football', 'futsal', 'badminton', 'volleyball'].map((sport) => (
-              <button
-                key={sport}
-                type="button"
-                onClick={() => toggleSport(sport)}
-                className={`px-3 py-1 rounded ${
-                  formData.sports.includes(sport)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {sport}
-              </button>
+              <div key={sport} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id={sport}
+                  checked={formData.sports.includes(sport)}
+                  onChange={() => toggleSport(sport)}
+                  className="mr-2"
+                />
+                <label htmlFor={sport} className="text-white">{sport}</label>
+              </div>
             ))}
-            {formData.sports.length < 3 && (
-              <button
-                type="button"
-                onClick={() => setShowOtherSports(!showOtherSports)}
-                className={`px-3 py-1 rounded ${
-                  showOtherSports ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
-          {showOtherSports && (
-            <input
-              type="text"
-              value={otherSportInput}
-              onChange={(e) => setOtherSportInput(e.target.value)}
-              onKeyDown={handleOtherSportKeyDown}
-              placeholder="Enter other sport and press Enter to add"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-          )}
-          <p className="text-sm mt-2">Selected ({formData.sports.length}/3): {formData.sports.join(', ')}</p>
+          <p className="text-sm mt-2">Selected: {formData.sports.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
-          <div className="flex flex-wrap gap-2">
+          <label className="block text-sm font-medium mb-2">Interested Features (Select multiple)</label>
+          <div className="bg-black/50 rounded-lg p-4">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
+              'in-tournament features and updates', 'rankings', 'tournament earnings'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews'
             ]).map((feature) => (
-              <button
-                key={feature}
-                type="button"
-                onClick={() => toggleFeature(feature)}
-                className={`px-3 py-1 rounded ${
-                  formData.interestedFeatures.includes(feature)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {feature}
-              </button>
+              <div key={feature} className="flex items-center mb-2">
+                <input
+                  type="checkbox"
+                  id={feature}
+                  checked={formData.interestedFeatures.includes(feature)}
+                  onChange={() => toggleFeature(feature)}
+                  className="mr-2"
+                />
+                <label htmlFor={feature} className="text-white">{feature}</label>
+              </div>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
+          <p className="text-sm mt-2">Selected: {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="flex flex-col space-y-2">
           <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded">

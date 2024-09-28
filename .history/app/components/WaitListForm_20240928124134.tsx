@@ -125,7 +125,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
+              'in-tournament features and updates', 'rankings', 'tournament earnings'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews'

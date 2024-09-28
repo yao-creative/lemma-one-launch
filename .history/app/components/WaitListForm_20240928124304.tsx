@@ -59,11 +59,16 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
   const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && otherSportInput.trim() !== '' && formData.sports.length < 3) {
       e.preventDefault();
-      setFormData(prevData => {
-        const newSports = [...prevData.sports, otherSportInput.trim()].slice(0, 3);
-        return { ...prevData, sports: newSports };
-      });
-      setOtherSportInput('');
+      // Validate that the input contains only letters and spaces
+      if (/^[A-Za-z\s]+$/.test(otherSportInput.trim())) {
+        setFormData(prevData => {
+          const newSports = [...prevData.sports, otherSportInput.trim()].slice(0, 3);
+          return { ...prevData, sports: newSports };
+        });
+        setOtherSportInput('');
+      } else {
+        alert("Please enter a valid sport name (letters and spaces only).");
+      }
     }
   };
 
@@ -125,7 +130,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({
           <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
-              'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles'
+              'in-tournament features and updates', 'rankings', 'tournament earnings'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews'
