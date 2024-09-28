@@ -356,10 +356,10 @@ export default function Home() {
               </p>
             </div>
             <div className="flex flex-row items-center justify-center mt-4">
-              <a href="https://www.linkedin.com/in/yi-yao-tan-9719301a3/" className="flex items-center mx-2">
+              <a href="https://www.linkedin.com/in/yao" className="flex items-center mx-2 gl">
                 <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="hover:opacity-80" />
               </a>
-              <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2">
+              <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2 glow-button">
                 <Image src="/icons/email.svg" alt="Email" width={24} height={24} className="hover:opacity-80" />
               </a>
             </div>

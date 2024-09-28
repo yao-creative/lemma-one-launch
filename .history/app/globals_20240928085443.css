@@ -211,14 +211,15 @@ select[multiple] option:checked {
 
 .neon-button-blue {
   box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6;
+  box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
   animation: neon-glow-blue 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes neon-glow-blue {
   from {
-    box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6;
+    box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
   }
   to {
-    box-shadow: 0 0 10px #3b82f6, 0 0 15px #3b82f6, 0 0 20px #3b82f6;
+    box-shadow: 0 0 20px #3b82f6, 0 0 30px #3b82f6, 0 0 40px #3b82f6;
   }
 }

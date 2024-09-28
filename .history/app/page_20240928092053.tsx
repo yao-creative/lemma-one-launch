@@ -355,12 +355,13 @@ export default function Home() {
                 Hi my name is Yao. I've been playing volleyball competitively since I was 14. I've competed in the largest national tournament when I was 17. After that, the notion of going pro for sports was almost non-existent in my country. I took a gamble and went abroad for a gap year. I ended up majoring in mathematics and computer science in university and, five years later, I'm back in this corner of the world to build things.
               </p>
             </div>
-            <div className="flex flex-row items-center justify-center mt-4">
-              <a href="https://www.linkedin.com/in/yi-yao-tan-9719301a3/" className="flex items-center mx-2">
-                <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="hover:opacity-80" />
+            <div className="flex flex-col items-center mt-4">
+              <a href="https://www.linkedin.com/in/yao" className="flex items-center text-blue-600 hover:underline">
+                <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="mr-2" />
+                LinkedIn
               </a>
-              <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2">
-                <Image src="/icons/email.svg" alt="Email" width={24} height={24} className="hover:opacity-80" />
+              <a href="mailto:yoytanwork@gmail.com" className="text-blue-600 hover:underline mt-2">
+                Email Yao
               </a>
             </div>
           </div>

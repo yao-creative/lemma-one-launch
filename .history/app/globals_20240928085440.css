@@ -188,37 +188,37 @@ select[multiple] option:checked {
 
 @keyframes neon-glow-purple {
   from {
-    box-shadow: 0 0 5px #9333ea, 0 0 10px #9333ea, 0 0 15px #9333ea;
+    box-shadow: 0 0 10px #9333ea, 0 0 20px #9333ea, 0 0 30px #9333ea;
   }
   to {
-    box-shadow: 0 0 10px #9333ea, 0 0 15px #9333ea, 0 0 20px #9333ea;
+    box-shadow: 0 0 20px #9333ea, 0 0 30px #9333ea, 0 0 40px #9333ea;
   }
 }
 
 .neon-button-green {
-  box-shadow: 0 0 5px #16a34a, 0 0 10px #16a34a, 0 0 15px #16a34a;
+  box-shadow: 0 0 10px #16a34a, 0 0 20px #16a34a, 0 0 30px #16a34a;
   animation: neon-glow-green 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes neon-glow-green {
   from {
-    box-shadow: 0 0 5px #16a34a, 0 0 10px #16a34a, 0 0 15px #16a34a;
+    box-shadow: 0 0 10px #16a34a, 0 0 20px #16a34a, 0 0 30px #16a34a;
   }
   to {
-    box-shadow: 0 0 10px #16a34a, 0 0 15px #16a34a, 0 0 20px #16a34a;
+    box-shadow: 0 0 20px #16a34a, 0 0 30px #16a34a, 0 0 40px #16a34a;
   }
 }
 
 .neon-button-blue {
-  box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6;
+  box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
   animation: neon-glow-blue 1.5s ease-in-out infinite alternate;
 }
 
 @keyframes neon-glow-blue {
   from {
-    box-shadow: 0 0 5px #3b82f6, 0 0 10px #3b82f6, 0 0 15px #3b82f6;
+    box-shadow: 0 0 10px #3b82f6, 0 0 20px #3b82f6, 0 0 30px #3b82f6;
   }
   to {
-    box-shadow: 0 0 10px #3b82f6, 0 0 15px #3b82f6, 0 0 20px #3b82f6;
+    box-shadow: 0 0 20px #3b82f6, 0 0 30px #3b82f6, 0 0 40px #3b82f6;
   }
 }

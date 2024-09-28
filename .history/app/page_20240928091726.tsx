@@ -136,7 +136,7 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50">
         <div className="mx-auto max-w-6xl mt-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Image src="/logo192.png" alt="LemmaOne Logo" width={48} height={40} />
+            <Image src="/logo192.png" alt="LemmaOne Logo" width={32} height={32} />
             <h1 className="text-2xl font-bold font-nike">LemmaOne</h1>
           </div>
           <div className="hidden md:flex space-x-4 items-center">
@@ -354,14 +354,6 @@ export default function Home() {
               <p className="text-sm opacity-70 text-center md:text-left md:pr-4 max-w-prose">
                 Hi my name is Yao. I've been playing volleyball competitively since I was 14. I've competed in the largest national tournament when I was 17. After that, the notion of going pro for sports was almost non-existent in my country. I took a gamble and went abroad for a gap year. I ended up majoring in mathematics and computer science in university and, five years later, I'm back in this corner of the world to build things.
               </p>
-            </div>
-            <div className="flex flex-row items-center justify-center mt-4">
-              <a href="https://www.linkedin.com/in/yi-yao-tan-9719301a3/" className="flex items-center mx-2">
-                <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="hover:opacity-80" />
-              </a>
-              <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2">
-                <Image src="/icons/email.svg" alt="Email" width={24} height={24} className="hover:opacity-80" />
-              </a>
             </div>
           </div>
         </section>
