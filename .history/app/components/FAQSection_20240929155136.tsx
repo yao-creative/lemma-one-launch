@@ -13,10 +13,10 @@ const FAQSection: React.FC = () => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
 
-  const faqs: FAQ[] = [
+  const faqs: FAQ[] = const faqs = [
     {
-      question: "Why the name LemmaOne?",
-      answer: "A 'lemma' is a term in mathematics for an intermediate result or tool to prove a theorem. We are creating LemmaOne to prove that semi-pro sports is possible in South East Asia and that SEA has one of the most vibrant sports communities in the world."
+      question: "Why LemmaOne?",
+      answer: "A Lemma is a term in mathematics for an intermediate result or tool to prove a theorem. We are creating LemmaOne to prove that a live sports community and semi-pro sports is possible in South East Asia."
     },
     {
       question: "When are we planning to launch?",

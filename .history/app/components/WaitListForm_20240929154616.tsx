@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 interface WaitListFormProps {
   showPlayerForm: boolean;
@@ -19,53 +19,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   const [regionalLevels, setRegionalLevels] = useState<string[]>([]);
   const [otherLevels, setOtherLevels] = useState<string[]>([]);
   const [additionalFeatures, setAdditionalFeatures] = useState('');
-  const [country, setCountry] = useState('');
-  const [state, setState] = useState('');
-  const [showOtherFeatures, setShowOtherFeatures] = useState(false);
-  const [otherFeatureInput, setOtherFeatureInput] = useState('');
-
-  const southEastAsianCountries = [
-    'Brunei', 'Cambodia', 'Indonesia', 'Laos', 'Malaysia', 'Myanmar', 
-    'Philippines', 'Singapore', 'Thailand', 'Vietnam', 'Timor-Leste', 'Hong Kong'
-  ];
-  
-  const statesByCountry = {
-    'Brunei': ['Belait', 'Brunei-Muara', 'Temburong', 'Tutong'],
-    'Cambodia': ['Phnom Penh', 'Siem Reap', 'Battambang', 'Preah Sihanouk', 'Kampong Cham', 'Kandal'],
-    'Indonesia': [
-      'Aceh', 'Bali', 'Banten', 'Central Java', 'East Java', 'Jakarta', 
-      'West Java', 'Yogyakarta', 'East Kalimantan', 'North Sumatra', 'West Sumatra', 'Papua'
-    ],
-    'Laos': ['Vientiane', 'Savannakhet', 'Champasak', 'Luang Prabang', 'Oudomxay', 'Xieng Khouang'],
-    'Malaysia': [
-      'Kuala Lumpur', 'Selangor', 'Penang', 'Johor', 'Perak', 'Kelantan', 'Sabah', 'Sarawak', 
-      'Pahang', 'Terengganu', 'Negeri Sembilan', 'Melaka', 'Kedah', 'Perlis'
-    ],
-    'Myanmar': [
-      'Yangon', 'Mandalay', 'Naypyidaw', 'Bago', 'Sagaing', 'Shan', 'Rakhine', 'Kachin', 'Chin'
-    ],
-    'Philippines': [
-      'Metro Manila', 'Cebu', 'Davao', 'Iloilo', 'Quezon City', 'Makati', 
-      'Zamboanga', 'Baguio', 'Cagayan de Oro'
-    ],
-    'Singapore': ['Central Region', 'East Region', 'North Region', 'North-East Region', 'West Region'],
-    'Thailand': [
-      'Bangkok', 'Chiang Mai', 'Chiang Rai', 'Phuket', 'Pattaya', 'Khon Kaen', 
-      'Nakhon Ratchasima', 'Krabi', 'Surat Thani'
-    ],
-    'Vietnam': [
-      'Ho Chi Minh City', 'Hanoi', 'Da Nang', 'Nha Trang', 'Hai Phong', 
-      'Can Tho', 'Hue', 'Vung Tau', 'Quang Ninh'
-    ],
-    'Timor-Leste': ['Dili', 'Baucau', 'Bobonaro', 'Viqueque', 'Lautém', 'Liquiçá'],
-    'Hong Kong': ['Hong Kong Island', 'Kowloon', 'New Territories']
-  };
-  
-
-  useEffect(() => {
-    // Reset state when country changes
-    setState('');
-  }, [country]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
@@ -94,26 +47,42 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   };
 
   const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
-    try {
-      let user;
-      switch (method) {
-        case 'google':
-          // Implement Google sign-up
-          break;
-        case 'facebook':
-          // Implement Facebook sign-up
-          break;
-        case 'phone':
-          // Implement phone sign-up
-          break;
-      }
-      console.log('User signed up:', user);
-      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
-    } catch (error) {
-      console.error('Error signing up:', error);
-      // Handle sign-up error (e.g., show an error message)
-    }
+  formData: {
+    name: string;
+    sports: string[];
+    otherSports: string[];
+    interestLevel: string;
+    features: string;
+    interestedFeatures: string[];
   };
+  setFormData: React.Dispatch<React.SetStateAction<{
+    name: string;
+    sports: string[];
+    otherSports: string[];
+    interestLevel: string;
+    features: string;
+    interestedFeatures: string[];
+  }>>;
+  handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSignUp: (method: 'google' | 'facebook' | 'phone') => Promise<void>;
+  showPlayerForm: boolean;
+}
+
+const WaitListForm: React.FC<WaitListFormProps> = ({
+  formData,
+  setFormData,
+  handleInputChange,
+  handleSubmit,
+  handleSignUp,
+  showPlayerForm
+}) => {
+  const [showOtherSports, setShowOtherSports] = useState(false);
+  const [otherSportInput, setOtherSportInput] = useState('');
+  const [tournamentLevels, setTournamentLevels] = useState<string[]>([]);
+  const [regionalLevels, setRegionalLevels] = useState<string[]>([]);
+  const [otherLevels, setOtherLevels] = useState<string[]>([]);
+  const [additionalFeatures, setAdditionalFeatures] = useState('');
 
   const toggleSport = (sport: string) => {
     setFormData(prevData => {
@@ -185,25 +154,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
     }
   };
 
-  const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCountry(e.target.value);
-  };
-
-  const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setState(e.target.value);
-  };
-
-  const handleOtherFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter' && otherFeatureInput.trim() !== '' && formData.interestedFeatures.length < 3) {
-      e.preventDefault();
-      setFormData(prevData => {
-        const newFeatures = [...prevData.interestedFeatures, otherFeatureInput.trim()].slice(0, 3);
-        return { ...prevData, interestedFeatures: newFeatures };
-      });
-      setOtherFeatureInput('');
-    }
-  };
-
   return (
     <div className="mt-8 w-full max-w-md">
       <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
@@ -216,43 +166,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           className="w-full p-2 mb-4 bg-black/50 text-white rounded"
           required
         />
-        
-        {/* Country Selection */}
-        <div className="mb-4">
-          <label htmlFor="country" className="block text-sm font-medium mb-2">Country</label>
-          <select
-            id="country"
-            value={country}
-            onChange={handleCountryChange}
-            className="w-full p-2 bg-black/50 text-white rounded"
-            required
-          >
-            <option value="">Select a country</option>
-            {southEastAsianCountries.map((c) => (
-              <option key={c} value={c}>{c}</option>
-            ))}
-          </select>
-        </div>
-
-        {/* State Selection */}
-        {country && (
-          <div className="mb-4">
-            <label htmlFor="state" className="block text-sm font-medium mb-2">State/Region</label>
-            <select
-              id="state"
-              value={state}
-              onChange={handleStateChange}
-              className="w-full p-2 bg-black/50 text-white rounded"
-              required
-            >
-              <option value="">Select a state/region</option>
-              {statesByCountry[country]?.map((s) => (
-                <option key={s} value={s}>{s}</option>
-              ))}
-            </select>
-          </div>
-        )}
-
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Select Sports (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
@@ -296,7 +209,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
               'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
@@ -317,28 +230,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 {feature}
               </button>
             ))}
-            {formData.interestedFeatures.length < 3 && (
-              <button
-                type="button"
-                onClick={() => setShowOtherFeatures(!showOtherFeatures)}
-                className={`px-3 py-1 rounded ${
-                  showOtherFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
-          {showOtherFeatures && (
-            <input
-              type="text"
-              value={otherFeatureInput}
-              onChange={(e) => setOtherFeatureInput(e.target.value)}
-              onKeyDown={handleOtherFeatureKeyDown}
-              placeholder="Enter other feature and press Enter to add"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-          )}
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">

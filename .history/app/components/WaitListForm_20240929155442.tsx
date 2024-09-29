@@ -195,15 +195,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
 
   const handleOtherFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && otherFeatureInput.trim() !== '' && formData.interestedFeatures.length < 3) {
-      e.preventDefault();
-      setFormData(prevData => {
-        const newFeatures = [...prevData.interestedFeatures, otherFeatureInput.trim()].slice(0, 3);
-        return { ...prevData, interestedFeatures: newFeatures };
-      });
-      setOtherFeatureInput('');
-    }
-  };
-
   return (
     <div className="mt-8 w-full max-w-md">
       <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
@@ -296,7 +287,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
-          <div className="flex flex-wrap gap-2 mb-2">
+          <div className="flex flex-wrap gap-2">
             {(showPlayerForm ? [
               'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
               'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
@@ -317,28 +308,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 {feature}
               </button>
             ))}
-            {formData.interestedFeatures.length < 3 && (
-              <button
-                type="button"
-                onClick={() => setShowOtherFeatures(!showOtherFeatures)}
-                className={`px-3 py-1 rounded ${
-                  showOtherFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
-          {showOtherFeatures && (
-            <input
-              type="text"
-              value={otherFeatureInput}
-              onChange={(e) => setOtherFeatureInput(e.target.value)}
-              onKeyDown={handleOtherFeatureKeyDown}
-              placeholder="Enter other feature and press Enter to add"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-          )}
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">

@@ -2,6 +2,8 @@
 
 import { useRef, useState } from 'react';
 import Image from 'next/image';
+import { signUpWithGoogle, signUpWithFacebook, signUpWithPhone } from './lib/auth';
+import { ApplicationVerifier } from 'firebase/auth';
 import WaitListForm from './components/WaitListForm';
 import FAQSection from './components/FAQSection';
 import AboutSection from './components/AboutSection';
@@ -20,8 +22,80 @@ export default function Home() {
     setMenuOpen(false);
   };
 
+  const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenFAQ(openFAQ === index ? null : index);
+  };
+
+  const faqs = [
+    {
+      question: "Why the name LemmaOne?",
+      answer: "A Lemma is a term in mathematics for an intermediate result or tool to prove a theorem. We are creating LemmaOne to prove that a live sports community and semi-pro sports is possible in South East Asia."
+    },
+    {
+      question: "When are we planning to launch?",
+      answer: "We plan on launching end of October or sometime in November with initial features and then add more features as we grow."
+    },
+    {
+      question: "How can I join the wait list?",
+      answer: "You can join the wait list by clicking on either the 'Players' or 'Organizers' button in the 'Join the Wait List' section and filling the form. We'll create an account for you upon soft launch."
+    },
+    {
+      question: "What sports do you intend to add?",
+      answer: "Currently Badminton, Volleyball, Basketball, Football, and Futsal, but we're open to suggestions"
+    },
+    {
+      question: "What Features do we intend to add?",
+      answer: "We're currently building a platform for sports hosting, but would like to grow into an interactive community to help build local tournaments to create a more immersive tournament experience, broaden their reach, and find new monetization methods. This way we can help grow a sustainable semi-pro sports community in South East Asia. "
+    },
+    {
+      question: "Feature Suggestions?",
+      answer: "We're always looking for new ideas an feature improvements. Join the Discord to build a community with us."
+    },
+    {
+      question: "Have something to contribute?",
+      answer: (
+        <div className="flex flex-col items-center">
+          <p>We're always looking for passionate web developers, designers, people with ideas, and passionate athletes to grow the community. You can contact us through our email or team member linkedin pages.</p>
+          <a href="mailto:yytanwork@gmail.com" className="mt-2">
+            <Image src="/icons/email.svg" alt="Email" width={24} height={24} />
+          </a>
+        </div>
+      ),
+    }
+
+  ];
+
   const [showPlayerForm, setShowPlayerForm] = useState(false);
   const [showOrganizerForm, setShowOrganizerForm] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    sports: [] as string[],
+    otherSports: [] as string[], // Changed from otherSport to otherSports
+    interestLevel: '',
+    features: '',
+    interestedFeatures: [] as string[],
+  });
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target;
+
+    if (type === 'select-multiple') {
+      const select = e.target as HTMLSelectElement;
+      const selectedOptions = Array.from(select.selectedOptions).map(option => option.value);
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: selectedOptions,
+      }));
+    } else {
+      setFormData(prevData => ({
+        ...prevData,
+        [name]: value,
+      }));
+    }
+  };
+  
 
   const toggleForm = (formType: 'player' | 'organizer') => {
     if (formType === 'player') {
@@ -30,6 +104,42 @@ export default function Home() {
     } else {
       setShowPlayerForm(false);
       setShowOrganizerForm(true);
+    }
+    // Don't reset form data when switching between forms
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Here you would handle the form submission, including OAuth authentication
+    console.log('Form submitted:', formData);
+    // Reset form and hide it after submission
+    setFormData({ name: '', sports: [], otherSports: [], interestLevel: '', features: '', interestedFeatures: [] });
+    setShowPlayerForm(false);
+    setShowOrganizerForm(false);
+  };
+
+  const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
+    try {
+      let user;
+      switch (method) {
+        case 'google':
+          user = await signUpWithGoogle(formData);
+          break;
+        case 'facebook':
+          user = await signUpWithFacebook(formData);
+          break;
+        case 'phone':
+          // You'll need to implement a way to get the phone number and set up the ApplicationVerifier
+          const phoneNumber = '+1234567890'; // Replace with actual phone number input
+          const appVerifier = {} as ApplicationVerifier; // Replace with actual ApplicationVerifier
+          user = await signUpWithPhone(phoneNumber, appVerifier, formData);
+          break;
+      }
+      console.log('User signed up:', user);
+      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
+    } catch (error) {
+      console.error('Error signing up:', error);
+      // Handle sign-up error (e.g., show an error message)
     }
   };
 
@@ -111,7 +221,14 @@ export default function Home() {
           </div>
 
           {(showPlayerForm || showOrganizerForm) && (
-            <WaitListForm showPlayerForm={showPlayerForm} />
+            <WaitListForm
+              formData={formData}
+              setFormData={setFormData}
+              handleInputChange={handleInputChange}
+              handleSubmit={handleSubmit}
+              handleSignUp={handleSignUp}
+              showPlayerForm={showPlayerForm}
+            />
           )}
         </section>
 
@@ -144,7 +261,7 @@ export default function Home() {
         </section>
 
         <AboutSection />
-        <FAQSection />
+        <FAQSection faqs={faqs} />
       </main>
     </div>
   );

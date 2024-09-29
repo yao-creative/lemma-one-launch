@@ -321,24 +321,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               <button
                 type="button"
                 onClick={() => setShowOtherFeatures(!showOtherFeatures)}
-                className={`px-3 py-1 rounded ${
-                  showOtherFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                Other
-              </button>
-            )}
           </div>
-          {showOtherFeatures && (
-            <input
-              type="text"
-              value={otherFeatureInput}
-              onChange={(e) => setOtherFeatureInput(e.target.value)}
-              onKeyDown={handleOtherFeatureKeyDown}
-              placeholder="Enter other feature and press Enter to add"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-          )}
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">

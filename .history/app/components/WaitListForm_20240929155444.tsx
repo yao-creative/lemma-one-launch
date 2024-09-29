@@ -334,31 +334,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               type="text"
               value={otherFeatureInput}
               onChange={(e) => setOtherFeatureInput(e.target.value)}
-              onKeyDown={handleOtherFeatureKeyDown}
-              placeholder="Enter other feature and press Enter to add"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-          )}
-          <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Target Reach</label>
-          <div className="flex flex-wrap gap-2 mb-2">
-            {['local', 'regional', 'national', 'international'].map((level) => (
-              <button
-                key={level}
-                type="button"
-                onClick={() => toggleRegionalLevel(level)}
-                className={`px-3 py-1 rounded ${
-                  regionalLevels.includes(level)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {level}
-              </button>
-            ))}
-          </div>
           <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
         </div>
 

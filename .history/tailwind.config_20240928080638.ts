@@ -13,11 +13,6 @@ const config: Config = {
         foreground: "var(--foreground)",
         darkBlue: "var(--dark-blue)",
       },
-      fontFamily: {
-        sans: ['var(--font-geist-sans)', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'monospace'],
-        nike: ['var(--font-nike)', 'sans-serif'],
-      },
     },
   },
   plugins: [],
