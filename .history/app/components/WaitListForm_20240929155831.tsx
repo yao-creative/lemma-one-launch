@@ -45,8 +45,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
     'Philippines', 'Singapore', 'Thailand', 'Vietnam', 'Timor-Leste', 'Hong Kong'
   ];
   
-  // Ensure statesByCountry is properly typed
-  const statesByCountry: StatesByCountry = {
+  const statesByCountry = {
     'Brunei': ['Belait', 'Brunei-Muara', 'Temburong', 'Tutong'],
     'Cambodia': ['Phnom Penh', 'Siem Reap', 'Battambang', 'Preah Sihanouk', 'Kampong Cham', 'Kandal'],
     'Indonesia': [
@@ -263,7 +262,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               required
             >
               <option value="">Select a state/region</option>
-              {(statesByCountry[country as keyof StatesByCountry] || []).map((s) => (
+              {statesByCountry[country]?.map((s) => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>

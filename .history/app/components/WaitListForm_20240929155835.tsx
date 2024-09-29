@@ -263,7 +263,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               required
             >
               <option value="">Select a state/region</option>
-              {(statesByCountry[country as keyof StatesByCountry] || []).map((s) => (
+              {statesByCountry[country]?.map((s) => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
