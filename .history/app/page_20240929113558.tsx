@@ -31,7 +31,7 @@ export default function Home() {
   const faqs = [
     {
       question: "Why LemmaOne?",
-      answer: "A Lemma is a term in mathematics for an intermediate result or tool to prove a theorem. We are creating LemmaOne to prove that a live sports community and semi-pro sports is possible in South East Asia."
+      answer: "A Lemma is a term in mathematics for an intermediate result or tool to prove a theorem. We are creating LemmaOne to prove that semi-pro sports is possible in South East Asia."
     },
     {
       question: "When are we planning to launch?",
@@ -235,16 +235,16 @@ export default function Home() {
         <section ref={communityRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">The Community</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            Help us grow the sports community in South East Asia. Grow the sport you love. Suggest features and give a pitch on the development on the Discord. Get updates on the development on Telegram and Whatsapp.
+            Help us grow the sports community in South East Asia which you love. Suggest features and get .
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://discord.gg/q8RxTuKQXV" className="inline-block px-8 py-4 rounded-full text-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-300 neon-button-purple">
+            <a href="https://discord.gg/QztR7ZPM" className="inline-block px-8 py-4 rounded-full text-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-300 neon-button-purple">
               Join Discord
             </a>
-            <a href="https://chat.whatsapp.com/FTkystI1sUFImgSzjzgezv" className="inline-block px-8 py-4 rounded-full text-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors duration-300 neon-button-green">
+            <a href="#" className="inline-block px-8 py-4 rounded-full text-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors duration-300 neon-button-green">
               WhatsApp Channel
             </a>
-            <a href="https://t.me/+zumEyTka9SQwNjFk" className="inline-block px-8 py-4 rounded-full text-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300 neon-button-blue">
+            <a href="#" className="inline-block px-8 py-4 rounded-full text-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300 neon-button-blue">
               Telegram Channel
             </a>
           </div>
