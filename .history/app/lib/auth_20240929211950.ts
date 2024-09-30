@@ -1,5 +1,5 @@
 import { auth, db } from './firebase';
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithPhoneNumber, ApplicationVerifier, RecaptchaVerifier } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 async function checkExistingUser(identifier: string) {
@@ -23,7 +23,7 @@ export async function signUpWithGoogle(formData: any) {
   try {
     const result = await signInWithPopup(auth, provider);
     await checkExistingUser(result.user.email!);
-    await storeUserData(result.user.uid, formData, 'google', result.user.email || undefined);
+    await storeUserData(result.user.uid, formData, 'google', result.user.email);
     return result.user;
   } catch (error) {
     console.error('Error signing up with Google:', error);
@@ -31,28 +31,10 @@ export async function signUpWithGoogle(formData: any) {
   }
 }
 
-export async function signUpWithFacebook(formData: any) {
-  const provider = new FacebookAuthProvider();
-  try {
-    const result = await signInWithPopup(auth, provider);
-    await checkExistingUser(result.user.email!);
-    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined);
-    return result.user;
-  } catch (error) {
-    console.error('Error signing up with Facebook:', error);
-    throw error;
-  }
-}
-
 export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
   try {
     await checkExistingUser(phoneNumber);
-    const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: (r: any) => {
-        console.log('recaptcha callback', r);
-      }
-    });
+    const appVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
     return confirmationResult;
   } catch (error) {

@@ -1,7 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { signUpWithGoogle, signUpWithFacebook, initiatePhoneSignUp, confirmPhoneSignUp } from '../lib/auth';
-import { auth } from '../lib/firebase';
-import { RecaptchaVerifier } from 'firebase/auth';
 
 interface WaitListFormProps {
   showPlayerForm: boolean;
@@ -42,10 +39,6 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   const [state, setState] = useState('');
   const [showOtherFeatures, setShowOtherFeatures] = useState(false);
   const [otherFeatureInput, setOtherFeatureInput] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [showVerificationInput, setShowVerificationInput] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<any>(null);
 
   const southEastAsianCountries = [
     'Brunei', 'Cambodia', 'Indonesia', 'Laos', 'Malaysia', 'Myanmar', 
@@ -119,80 +112,33 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
       regionalLevels.length > 0 &&
       otherLevels.length > 0
     );
-  };
-
-  const getPhoneNumberFromUser = async (): Promise<string> => {
-    return new Promise((resolve) => {
-      const phoneNumber = prompt('Please enter your phone number with country code (e.g., +1234567890):');
-      resolve(phoneNumber || '');
-    });
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    // Here you would handle the form submission, including OAuth authentication
+    console.log('Form submitted:', formData);
+    // Reset form and hide it after submission
+    setFormData({ name: '', sports: [], otherSports: [], interestLevel: '', features: '', interestedFeatures: [] });
   };
 
   const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
-    if (!isFormValid()) {
-      alert('Please fill in all required fields before submitting.');
-      return;
-    }
-
-    const completeFormData = {
-      ...formData,
-      country,
-      state,
-      regionalLevels,
-      otherLevels,
-      additionalFeatures,
-    };
-
     try {
       let user;
       switch (method) {
         case 'google':
-          user = await signUpWithGoogle(completeFormData);
+          // Implement Google sign-up
           break;
         case 'facebook':
-          user = await signUpWithFacebook(completeFormData);
+          // Implement Facebook sign-up
           break;
         case 'phone':
-          const phoneNumber = await getPhoneNumberFromUser();
-          if (!phoneNumber) {
-            alert('Phone number is required for phone sign-up.');
-            return;
-          }
-          setPhoneNumber(phoneNumber);
-          const confirmation = await initiatePhoneSignUp(phoneNumber, completeFormData);
-          setConfirmationResult(confirmation);
-          setShowVerificationInput(true);
-          return;
+          // Implement phone sign-up
+          break;
       }
       console.log('User signed up:', user);
       // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('An error occurred during sign-up. Please try again.');
-    }
-  };
-
-  const handleVerifyCode = async () => {
-    if (!confirmationResult) {
-      alert('Please request a verification code first.');
-      return;
-    }
-
-    try {
-      const completeFormData = {
-        ...formData,
-        country,
-        state,
-        regionalLevels,
-        otherLevels,
-        additionalFeatures,
-      };
-      const user = await confirmPhoneSignUp(confirmationResult, verificationCode, completeFormData);
-      console.log('User signed up with phone:', user);
-      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
-    } catch (error) {
-      console.error('Error verifying code:', error);
-      alert('Invalid verification code. Please try again.');
+      // Handle sign-up error (e.g., show an error message)
     }
   };
 
@@ -287,7 +233,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
 
   return (
     <div className="mt-8 w-full max-w-md">
-      <form className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
+      <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
         <input
           type="text"
           name="name"
@@ -379,10 +325,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {(showPlayerForm ? [
-              'tournament search', 'team matching', 'social media', 'pre-tournament previews', 'tournament merch', 'ticketing',
+              'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
               'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
             ] : [
-              'tournament hosting', 'ticketing', 'tournament monetization', 'merchandise sales',
+              'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews', 'fan engagement'
             ]).map((feature) => (
               <button
@@ -423,7 +369,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Interest Geography</label>
+          <label className="block text-sm font-medium mb-2">Target Reach</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {['local', 'regional', 'national', 'international'].map((level) => (
               <button
@@ -440,7 +386,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">
@@ -473,38 +419,21 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
             rows={4}
           />
         </div>
-        {/*
-          Always show the sign-up buttons, but validate the form on click.
-        */}
-        <h4 className="text-lg font-semibold mb-2 mt-4">Submit and Sign Up:</h4>
         <div className="flex flex-col space-y-2">
-          <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
-            Sign up with Google
-          </button>
-          <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
-            Sign up with Facebook
-          </button>
-          <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
-            Sign up with Mobile
-          </button>
+        <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+          Sign up with Google
+        </button>
+        <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+          Sign up with Facebook
+        </button>
+        <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+          Sign up with Mobile
+        </button>
         </div>
-
-        {showVerificationInput && (
-          <div className="mt-4">
-            <input
-              type="text"
-              value={verificationCode}
-              onChange={(e) => setVerificationCode(e.target.value)}
-              placeholder="Enter verification code"
-              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-            />
-            <button type="button" onClick={handleVerifyCode} className="bg-green-600 text-white p-2 rounded-lg w-full">
-              Verify Code
-            </button>
-          </div>
-        )}
+        <button type="submit" className="w-full mt-4 bg-purple-600 text-white p-2 rounded-lg">
+          Submit
+        </button>
       </form>
-      <div id="recaptcha-container"></div>
     </div>
   );
 };

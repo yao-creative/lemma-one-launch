@@ -48,11 +48,6 @@ export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
   try {
     await checkExistingUser(phoneNumber);
     const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: (r: any) => {
-        console.log('recaptcha callback', r);
-      }
-    });
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
     return confirmationResult;
   } catch (error) {

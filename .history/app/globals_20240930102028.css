@@ -18,7 +18,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Open Sans', Arial, sans-serif;
+  font-family: 'Google Sans', var(--font-geist-sans), Arial, sans-serif; // Updated to use Google Sans
 }
 
 @layer utilities {

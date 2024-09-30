@@ -440,7 +440,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Target : {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">

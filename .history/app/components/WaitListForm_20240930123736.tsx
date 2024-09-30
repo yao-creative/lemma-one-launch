@@ -379,7 +379,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {(showPlayerForm ? [
-              'tournament search', 'team matching', 'social media', 'pre-tournament previews', 'tournament merch', 'ticketing',
+              'tournament search', 'team matching', 'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
               'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
             ] : [
               'tournament hosting', 'ticketing', 'tournament monetization', 'merchandise sales',
@@ -423,7 +423,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Interest Geography</label>
+          <label className="block text-sm font-medium mb-2">Target Reach</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {['local', 'regional', 'national', 'international'].map((level) => (
               <button
@@ -440,7 +440,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">

@@ -14,10 +14,9 @@ const config: Config = {
         darkBlue: "var(--dark-blue)",
       },
       fontFamily: {
-        sans: ['var(--font-geist-sans)', 'sans-serif'],
+        sans: ['Google Sans', 'var(--font-geist-sans)', 'sans-serif'], // Updated to include Google Sans
         mono: ['var(--font-geist-mono)', 'monospace'],
         nike: ['var(--font-nike)', 'sans-serif'],
-        'open-sans': ['var(--font-open-sans)', 'sans-serif'],
       },
     },
   },

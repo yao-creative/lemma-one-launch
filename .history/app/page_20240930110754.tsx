@@ -82,12 +82,12 @@ export default function Home() {
             Introducing an all-in-one sports tournament hosting platform. LemmaOne connects athletes and organizers, providing a space to grow the sport from amateur to semi-pro levels by collaborating with organizers to create a more immersive tournament experience and scale their reach.
           </p>
           <p className="text-base md:text-lg max-w-2xl font-bold">
-            We're also on a mission to make semi-pro sports a reality in South East Asia. We want to empower competitive athletes and tournaments.
+            We're also on a mission to make semi-pro sports a reality in South East Asia. We want to empower semi-pro athletes and tournaments.
           </p>
         </section>
 
         <section ref={waitListRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
-          <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">Join the Wait List</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Join the Wait List</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
             By joining the wait list we'll create an account for you upon soft launch.
           </p>
@@ -116,7 +116,7 @@ export default function Home() {
         </section>
 
         <section ref={communityRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
-          <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">The Community</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">The Community</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
             Help us grow the sports community in South East Asia. Grow the sport you love. Suggest features and give a pitch on the development on the Discord. Get updates on the development on Telegram and Whatsapp.
           </p>
@@ -134,7 +134,7 @@ export default function Home() {
         </section>
 
         <section ref={supportRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
-          <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">Support Us</h3>
+          <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-4">Support Us</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
             We're realising a limited kit for the launch. Help us continue to grow and support semi-pro sports scene in South East Asia.
           </p>

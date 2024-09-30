@@ -17,7 +17,6 @@ const config: Config = {
         sans: ['var(--font-geist-sans)', 'sans-serif'],
         mono: ['var(--font-geist-mono)', 'monospace'],
         nike: ['var(--font-nike)', 'sans-serif'],
-        'open-sans': ['var(--font-open-sans)', 'sans-serif'],
       },
     },
   },

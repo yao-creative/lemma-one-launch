@@ -36,7 +36,7 @@ export async function signUpWithFacebook(formData: any) {
   try {
     const result = await signInWithPopup(auth, provider);
     await checkExistingUser(result.user.email!);
-    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined);
+    await storeUserData(result.user.uid, formData, 'facebook', result.user.emai;
     return result.user;
   } catch (error) {
     console.error('Error signing up with Facebook:', error);
@@ -47,12 +47,7 @@ export async function signUpWithFacebook(formData: any) {
 export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
   try {
     await checkExistingUser(phoneNumber);
-    const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: (r: any) => {
-        console.log('recaptcha callback', r);
-      }
-    });
+    const appVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
     const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
     return confirmationResult;
   } catch (error) {

@@ -1,11 +1,23 @@
 import type { Metadata } from "next";
+import localFont from "next/font/local";
 import { Open_Sans } from 'next/font/google';
 import "./globals.css";
 
 const openSans = Open_Sans({
   subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // Regular, Medium, SemiBold, Bold
+  weight: ['500'], // Medium weight
   variable: '--font-open-sans',
+});
+
+const geistMono = localFont({
+  src: "./fonts/GeistMonoVF.woff",
+  variable: "--font-geist-mono",
+  weight: "100 900",
+});
+
+const nikeFont = localFont({
+  src: "./fonts/Futura-Condensed-Extra-Bold.otf",
+  variable: "--font-nike",
 });
 
 export const metadata: Metadata = {
@@ -21,7 +33,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${openSans.variable} antialiased`}
+        className={`${openSans.variable} ${geistMono.variable} ${nikeFont.variable} antialiased`}
       >
         {children}
       </body>

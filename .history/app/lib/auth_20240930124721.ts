@@ -49,7 +49,7 @@ export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
     await checkExistingUser(phoneNumber);
     const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       size: 'invisible',
-      callback: (r: any) => {
+      callback: (r) => {
         console.log('recaptcha callback', r);
       }
     });

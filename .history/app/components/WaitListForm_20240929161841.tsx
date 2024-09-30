@@ -145,6 +145,15 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
 
     try {
       let user;
+      const completeFormData = {
+        ...formData,
+        country,
+        state,
+        regionalLevels,
+        otherLevels,
+        additionalFeatures,
+      };
+
       switch (method) {
         case 'google':
           user = await signUpWithGoogle(completeFormData);
@@ -159,7 +168,8 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
             return;
           }
           setPhoneNumber(phoneNumber);
-          const confirmation = await initiatePhoneSignUp(phoneNumber, completeFormData);
+          const appVerifier = new RecaptchaVerifier('recaptcha-container', {}, auth);
+          const confirmation = await signUpWithPhone(phoneNumber, appVerifier, completeFormData);
           setConfirmationResult(confirmation);
           setShowVerificationInput(true);
           return;
@@ -179,16 +189,8 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
     }
 
     try {
-      const completeFormData = {
-        ...formData,
-        country,
-        state,
-        regionalLevels,
-        otherLevels,
-        additionalFeatures,
-      };
-      const user = await confirmPhoneSignUp(confirmationResult, verificationCode, completeFormData);
-      console.log('User signed up with phone:', user);
+      const result = await confirmationResult.confirm(verificationCode);
+      console.log('User signed up with phone:', result.user);
       // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error verifying code:', error);
@@ -379,10 +381,10 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <label className="block text-sm font-medium mb-2">Interested Features (Max 3)</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {(showPlayerForm ? [
-              'tournament search', 'team matching', 'social media', 'pre-tournament previews', 'tournament merch', 'ticketing',
+              'social media', 'pre-tournament previews', 'merchandize sales', 'ticketing',
               'in-tournament features and updates', 'rankings', 'tournament earnings', 'player profiles', 'fan space'
             ] : [
-              'tournament hosting', 'ticketing', 'tournament monetization', 'merchandise sales',
+              'tournament hosting', 'ticketing', 'tournament monetization', 'merchandize sales',
               'in-tournament features and updates', 'social media', 'pre-tournament previews', 'fan engagement'
             ]).map((feature) => (
               <button
@@ -423,7 +425,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <p className="text-sm mt-2">Selected ({formData.interestedFeatures.length}/3): {formData.interestedFeatures.join(', ')}</p>
         </div>
         <div className="mb-4">
-          <label className="block text-sm font-medium mb-2">Interest Geography</label>
+          <label className="block text-sm font-medium mb-2">Target Reach</label>
           <div className="flex flex-wrap gap-2 mb-2">
             {['local', 'regional', 'national', 'international'].map((level) => (
               <button
@@ -440,7 +442,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Target Reach: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">
@@ -473,21 +475,22 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
             rows={4}
           />
         </div>
-        {/*
-          Always show the sign-up buttons, but validate the form on click.
-        */}
-        <h4 className="text-lg font-semibold mb-2 mt-4">Submit and Sign Up:</h4>
-        <div className="flex flex-col space-y-2">
-          <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
-            Sign up with Google
-          </button>
-          <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
-            Sign up with Facebook
-          </button>
-          <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
-            Sign up with Mobile
-          </button>
-        </div>
+        {isFormValid() && (
+          <>
+            <h4 className="text-lg font-semibold mb-2 mt-4">Submit and Sign Up:</h4>
+            <div className="flex flex-col space-y-2">
+              <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                Sign up with Google
+              </button>
+              <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                Sign up with Facebook
+              </button>
+              <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                Sign up with Mobile
+              </button>
+            </div>
+          </>
+        )}
 
         {showVerificationInput && (
           <div className="mt-4">
