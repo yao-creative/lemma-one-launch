@@ -117,7 +117,7 @@ export default function Home() {
         <section ref={waitListRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">Join the Wait List</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            By joining the wait list we'll create an account for you upon soft launch. Players and Organizers sign up here.
+            By joining the wait list we'll create an account for you upon soft launch. Whether you're a player, organizer, or both, we've got you covered!
           </p>
           <button 
             onClick={toggleWaitListForm} 
@@ -134,17 +134,17 @@ export default function Home() {
         <section ref={communityRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">The Community</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            Help us grow the sports community in South East Asia. Suggest features and give a pitch on the development on the Discord. Get updates on the development on Telegram and Whatsapp.
+            Help us grow the sports community in South East Asia. Grow the sport you love. Suggest features and give a pitch on the development on the Discord. Get updates on the development on Telegram and Whatsapp.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a href="https://discord.gg/q8RxTuKQXV" className="inline-block px-8 py-4 rounded-full text-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-300 neon-button-purple">
-              Join Discord Channel
+              Join LemmaOne Discord to suggest features, give a pitch on the development, and stay up to date.
             </a>
             <a href="https://chat.whatsapp.com/FTkystI1sUFImgSzjzgezv" className="inline-block px-8 py-4 rounded-full text-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors duration-300 neon-button-green">
-              Join WhatsApp Channel
+              WhatsApp Channel
             </a>
             <a href="https://t.me/+zumEyTka9SQwNjFk" className="inline-block px-8 py-4 rounded-full text-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300 neon-button-blue">
-              Join Telegram Channel
+              Telegram Channel
             </a>
           </div>
         </section>
@@ -153,12 +153,10 @@ export default function Home() {
           <p className="text-base md:text-lg mb-6 max-w-2xl">
             Stay updated on the latest news, features, and updates from LemmaOne.
           </p>
-          <div className="flex flex-col items-center">
-            <h4 className="text-xl md:text-2xl font-semibold font-open-sans mb-4">Instagram</h4>
-            <button onClick={() => window.open('https://www.instagram.com/the_lemma_one/', '_blank')} className="px-8 py-4 rounded-full text-lg font-semibold">
-              <Image src="/icons/instagram.svg" alt="Instagram" width={100} height={100} />
-            </button>
-          </div>
+          <a href="https://www.instagram.com/the_lemma_one/" className="inline-block px-8 py-4 rounded-full text-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-300 neon-button-purple">
+            <Image src="/icons/instagram.svg" alt="Instagram" width={24} height={24} />
+            Follow LemmaOne All-in-one Sports Tournament Platform on Instagram
+          </a>
         </section>
         <section ref={supportRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">Support Us</h3>

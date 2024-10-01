@@ -2,7 +2,7 @@ import { db } from './firebase';
 import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
 
 export interface WaitListEntry {
-  userType: 'player' | 'organizer';
+  userTypes: ('player' | 'organizer')[];
   location: {
     country: string;
     state: string;
@@ -13,16 +13,17 @@ export interface WaitListEntry {
   additionalFeatures?: string;
   signupMethod: 'google' | 'facebook' | 'phone';
   signUpData: string;
-  regionalLevels?: string[]; // For players
-  tournamentLevels?: string[]; // For organizers
+  regionalLevels?: string[];
+  tournamentLevels?: string[];
 }
 
 export async function submitWaitListEntry(userId: string, data: WaitListEntry) {
   try {
-    const { userType, location, ...rest } = data;
-    const docRef = doc(db, 'waitListEntries', userType, `${location.country}_${location.state}`, userId);
+    const { userTypes, location, ...rest } = data;
+    const docRef = doc(db, 'waitListEntries', `${location.country}_${location.state}`, userId);
 
     await setDoc(docRef, {
+      userTypes,
       ...rest,
       timestamp: serverTimestamp(),
     });

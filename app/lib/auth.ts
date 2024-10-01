@@ -27,7 +27,7 @@ async function checkExistingUser(uid: string, email?: string, phoneNumber?: stri
 
 async function storeUserData(uid: string, formData: any, authProvider: string, email?: string, phoneNumber?: string, facebookId?: string) {
   const waitListEntry: WaitListEntry = {
-    userType: formData.showPlayerForm ? 'player' : 'organizer',
+    userTypes: formData.userTypes,
     location: {
       country: formData.country,
       state: formData.state,
@@ -38,13 +38,9 @@ async function storeUserData(uid: string, formData: any, authProvider: string, e
     additionalFeatures: formData.additionalFeatures,
     signupMethod: authProvider as 'google' | 'facebook' | 'phone',
     signUpData: email || phoneNumber || facebookId || '',
+    regionalLevels: formData.regionalLevels || [],
+    tournamentLevels: formData.tournamentLevels || [],
   };
-
-  if (formData.showPlayerForm) {
-    waitListEntry.regionalLevels = formData.regionalLevels || [];
-  } else {
-    waitListEntry.tournamentLevels = formData.tournamentLevels || [];
-  }
 
   // Store user data in 'users' collection
   await setDoc(doc(db, 'users', uid), {
@@ -52,7 +48,7 @@ async function storeUserData(uid: string, formData: any, authProvider: string, e
     phoneNumber: phoneNumber || null,
     facebookId: facebookId || null,
     authProvider: authProvider,
-    userType: formData.showPlayerForm ? 'player' : 'organizer',
+    userTypes: formData.userTypes,
   });
 
   // Submit wait list entry

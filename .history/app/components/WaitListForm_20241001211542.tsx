@@ -105,10 +105,10 @@ const WaitListForm: React.FC = () => {
       let user;
       switch (method) {
         case 'google':
-          user = await signUpWithGoogle(formData);
+          user = await signUpWithGoogle(completeFormData);
           break;
         case 'facebook':
-          user = await signUpWithFacebook(formData);
+          user = await signUpWithFacebook(completeFormData);
           break;
         case 'phone':
           const phoneNumber = await getPhoneNumberFromUser();
@@ -117,15 +117,16 @@ const WaitListForm: React.FC = () => {
             return;
           }
           setPhoneNumber(phoneNumber);
-          const confirmation = await initiatePhoneSignUp(phoneNumber, formData);
+          const confirmation = await initiatePhoneSignUp(phoneNumber, completeFormData);
           setConfirmationResult(confirmation);
           setShowVerificationInput(true);
           return;
       }
-      setSignUpSuccess(method);
+      console.log('User signed up:', user);
+      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('An error occurred during sign-up. Please try again.');
+      alert('An error occurred during sign-up authentification. Please try again.');
     }
   };
 
@@ -136,8 +137,13 @@ const WaitListForm: React.FC = () => {
     }
 
     try {
-      await confirmPhoneSignUp(confirmationResult, verificationCode, formData);
-      setSignUpSuccess('phone');
+      const completeFormData = {
+        ...formData,
+        userTypes: formData.userTypes,
+      };
+      const user = await confirmPhoneSignUp(confirmationResult, verificationCode, completeFormData);
+      console.log('User signed up with phone:', user);
+      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error verifying code:', error);
       alert('Invalid verification code. Please try again.');
@@ -154,36 +160,48 @@ const WaitListForm: React.FC = () => {
   return (
     <div className="mt-8 w-full max-w-md">
       <form className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
-        <UserTypeSelection formData={formData} setFormData={updateFormData} />
+        <UserTypeSelection 
+          formData={formData} 
+          setFormData={updateFormData}
+        />
         
         {formData.userTypes.length > 0 && (
           <>
             <BasicInfo formData={formData} setFormData={updateFormData} />
-            <SportsSelection formData={formData} setFormData={updateFormData} />
-            <InterestedFeatures formData={formData} setFormData={updateFormData} />
-            <GeographySelection formData={formData} setFormData={updateFormData} />
-            <CompetitionLevels formData={formData} setFormData={updateFormData} />
-            <AdditionalFeatures formData={formData} setFormData={updateFormData} />
+            <SportsSelection 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <InterestedFeatures 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <GeographySelection 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <CompetitionLevels 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <AdditionalFeatures
+             formData={formData}
+             setFormData={updateFormData}
+            />
 
-            {signUpSuccess ? (
-              <div className="mt-4 text-center text-green-500">
-                You have successfully signed up with {signUpSuccess}. You'll be notified upon launch!
-              </div>
-            ) : (
-              <div className="flex flex-col space-y-2 mt-4">
-                <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Google
-                </button>
-                <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
-                  Join Waitlist with Facebook
-                </button>
-                <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Mobile
-                </button>
-              </div>
-            )}
+            <div className="flex flex-col space-y-2 mt-4">
+              <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                Join Waitlist with Google
+              </button>
+              <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                Join Waitlist with Facebook
+              </button>
+              <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                Join Waitlist with Mobile
+              </button>
+            </div>
 
-            {showVerificationInput && !signUpSuccess && (
+            {showVerificationInput && (
               <div className="mt-4">
                 <input
                   type="text"

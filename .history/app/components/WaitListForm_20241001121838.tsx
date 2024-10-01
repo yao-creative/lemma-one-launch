@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { signUpWithGoogle, signUpWithFacebook, initiatePhoneSignUp, confirmPhoneSignUp } from '../lib/auth';
 import { auth } from '../lib/firebase';
+// Remove unused import
+// import { RecaptchaVerifier } from 'firebase/auth';
 
 // Import components from the correct path
 import UserTypeSelection from '../components/form/UserTypeSelection';
@@ -11,24 +13,21 @@ import GeographySelection from '../components/form/GeographySelection';
 import CompetitionLevels from '../components/form/CompetitionLevels';
 import AdditionalFeatures from '../components/form/AdditionalFeatures';
 
-// Update FormData interface
-export interface FormData {
+// Define FormData interface
+interface FormData {
   name: string;
-  country: string;
-  region: string; // Changed from 'state' to 'region' for consistency
   sports: string[];
   otherSports: string[];
   playerInterestedFeatures: string[];
   organizerInterestedFeatures: string[];
+  country: string;
+  state: string;
   competitionLevels: string[];
   regionalLevels: string[];
   tournamentLevels: string[];
   additionalFeatures: string;
   userTypes: ("player" | "organizer")[];
 }
-
-// Create a type for the setFormData function
-type SetFormData = React.Dispatch<React.SetStateAction<FormData>>;
 
 const WaitListForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -38,7 +37,7 @@ const WaitListForm: React.FC = () => {
     playerInterestedFeatures: [],
     organizerInterestedFeatures: [],
     country: '',
-    region: '',
+    state: '',
     competitionLevels: [],
     regionalLevels: [],
     tournamentLevels: [],
@@ -49,38 +48,20 @@ const WaitListForm: React.FC = () => {
   const [verificationCode, setVerificationCode] = useState('');
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
-  const [signUpSuccess, setSignUpSuccess] = useState<string | null>(null);
 
   const isFormValid = () => {
-    const errors: string[] = [];
-
-    if (formData.name.trim() === '') errors.push('Name is required');
-    if (formData.country === '') errors.push('Country is required');
-    if (formData.region === '') errors.push('Region is required');
-    if (formData.sports.length === 0) errors.push('At least one sport must be selected');
-    if (formData.competitionLevels.length === 0) errors.push('At least one competition level must be selected');
-    if (formData.userTypes.length === 0) errors.push('At least one user type must be selected');
-
-    if (formData.userTypes.includes('player')) {
-      if (formData.playerInterestedFeatures.length < 3 || formData.playerInterestedFeatures.length > 5) {
-        errors.push('Players must select 3-5 interested features');
-      }
-      if (formData.regionalLevels.length === 0) errors.push('Players must select at least one regional level');
-    }
-
-    if (formData.userTypes.includes('organizer')) {
-      if (formData.organizerInterestedFeatures.length < 3 || formData.organizerInterestedFeatures.length > 5) {
-        errors.push('Organizers must select 3-5 interested features');
-      }
-      if (formData.tournamentLevels.length === 0) errors.push('Organizers must select at least one tournament level');
-    }
-
-    if (errors.length > 0) {
-      alert('Please correct the following errors:\n\n' + errors.join('\n'));
-      return false;
-    }
-
-    return true;
+    return (
+      formData.name.trim() !== '' &&
+      formData.country !== '' &&
+      formData.state !== '' &&
+      formData.sports.length > 0 &&
+      formData.competitionLevels.length > 0 &&
+      formData.userTypes.length > 0 &&
+      (formData.userTypes.includes('player') ? 
+        (formData.playerInterestedFeatures.length >= 3 && formData.playerInterestedFeatures.length <= 5 && formData.regionalLevels.length > 0) : true) &&
+      (formData.userTypes.includes('organizer') ? 
+        (formData.organizerInterestedFeatures.length >= 3 && formData.organizerInterestedFeatures.length <= 5 && formData.tournamentLevels.length > 0) : true)
+    );
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -99,16 +80,24 @@ const WaitListForm: React.FC = () => {
   };
 
   const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
-    if (!isFormValid()) return;
+    if (!isFormValid()) {
+      alert('Please fill in all required fields before submitting.');
+      return;
+    }
+
+    const completeFormData = {
+      ...formData,
+      userTypes: formData.userTypes,
+    };
 
     try {
       let user;
       switch (method) {
         case 'google':
-          user = await signUpWithGoogle(formData);
+          user = await signUpWithGoogle(completeFormData);
           break;
         case 'facebook':
-          user = await signUpWithFacebook(formData);
+          user = await signUpWithFacebook(completeFormData);
           break;
         case 'phone':
           const phoneNumber = await getPhoneNumberFromUser();
@@ -117,15 +106,16 @@ const WaitListForm: React.FC = () => {
             return;
           }
           setPhoneNumber(phoneNumber);
-          const confirmation = await initiatePhoneSignUp(phoneNumber, formData);
+          const confirmation = await initiatePhoneSignUp(phoneNumber, completeFormData);
           setConfirmationResult(confirmation);
           setShowVerificationInput(true);
           return;
       }
-      setSignUpSuccess(method);
+      console.log('User signed up:', user);
+      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('An error occurred during sign-up. Please try again.');
+      alert('An error occurred during sign-up authentification. Please try again.');
     }
   };
 
@@ -136,54 +126,64 @@ const WaitListForm: React.FC = () => {
     }
 
     try {
-      await confirmPhoneSignUp(confirmationResult, verificationCode, formData);
-      setSignUpSuccess('phone');
+      const completeFormData = {
+        ...formData,
+        userTypes: formData.userTypes,
+      };
+      const user = await confirmPhoneSignUp(confirmationResult, verificationCode, completeFormData);
+      console.log('User signed up with phone:', user);
+      // Handle successful sign-up (e.g., show a success message, redirect, etc.)
     } catch (error) {
       console.error('Error verifying code:', error);
       alert('Invalid verification code. Please try again.');
     }
   };
 
-  const updateFormData = (updater: Partial<FormData> | ((prevData: FormData) => FormData)) => {
-    setFormData(prevData => {
-      const newData = typeof updater === 'function' ? updater(prevData) : updater;
-      return { ...prevData, ...newData };
-    });
-  };
-
   return (
     <div className="mt-8 w-full max-w-md">
       <form className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
-        <UserTypeSelection formData={formData} setFormData={updateFormData} />
+        <UserTypeSelection 
+          formData={formData} 
+          setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })} 
+        />
         
         {formData.userTypes.length > 0 && (
           <>
-            <BasicInfo formData={formData} setFormData={updateFormData} />
-            <SportsSelection formData={formData} setFormData={updateFormData} />
-            <InterestedFeatures formData={formData} setFormData={updateFormData} />
-            <GeographySelection formData={formData} setFormData={updateFormData} />
-            <CompetitionLevels formData={formData} setFormData={updateFormData} />
-            <AdditionalFeatures formData={formData} setFormData={updateFormData} />
+            <BasicInfo formData={formData} handleInputChange={handleInputChange} />
+            <SportsSelection 
+              formData={formData} 
+              setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })}
+            />
+            <InterestedFeatures 
+              formData={formData} 
+              setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })}
+            />
+            <GeographySelection 
+              formData={formData} 
+              setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })} 
+            />
+            <CompetitionLevels 
+              formData={formData} 
+              setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })} 
+            />
+            <AdditionalFeatures
+             formData={formData}
+             setFormData={(data: Partial<FormData>) => setFormData({ ...formData, ...data })}
+            />
 
-            {signUpSuccess ? (
-              <div className="mt-4 text-center text-green-500">
-                You have successfully signed up with {signUpSuccess}. You'll be notified upon launch!
-              </div>
-            ) : (
-              <div className="flex flex-col space-y-2 mt-4">
-                <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Google
-                </button>
-                <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
-                  Join Waitlist with Facebook
-                </button>
-                <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Mobile
-                </button>
-              </div>
-            )}
+            <div className="flex flex-col space-y-2 mt-4">
+              <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                Join Waitlist with Google
+              </button>
+              <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                Join Waitlist with Facebook
+              </button>
+              <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                Join Waitlist with Mobile
+              </button>
+            </div>
 
-            {showVerificationInput && !signUpSuccess && (
+            {showVerificationInput && (
               <div className="mt-4">
                 <input
                   type="text"

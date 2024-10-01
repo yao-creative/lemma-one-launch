@@ -163,27 +163,40 @@ const WaitListForm: React.FC = () => {
             <InterestedFeatures formData={formData} setFormData={updateFormData} />
             <GeographySelection formData={formData} setFormData={updateFormData} />
             <CompetitionLevels formData={formData} setFormData={updateFormData} />
-            <AdditionalFeatures formData={formData} setFormData={updateFormData} />
+            <SportsSelection 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <InterestedFeatures 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <GeographySelection 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <CompetitionLevels 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <AdditionalFeatures
+             formData={formData}
+             setFormData={updateFormData}
+            />
 
-            {signUpSuccess ? (
-              <div className="mt-4 text-center text-green-500">
-                You have successfully signed up with {signUpSuccess}. You'll be notified upon launch!
-              </div>
-            ) : (
-              <div className="flex flex-col space-y-2 mt-4">
-                <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Google
-                </button>
-                <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
-                  Join Waitlist with Facebook
-                </button>
-                <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
-                  Join Waitlist with Mobile
-                </button>
-              </div>
-            )}
+            <div className="flex flex-col space-y-2 mt-4">
+              <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                Join Waitlist with Google
+              </button>
+              <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                Join Waitlist with Facebook
+              </button>
+              <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                Join Waitlist with Mobile
+              </button>
+            </div>
 
-            {showVerificationInput && !signUpSuccess && (
+            {showVerificationInput && (
               <div className="mt-4">
                 <input
                   type="text"

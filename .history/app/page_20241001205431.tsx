@@ -117,7 +117,7 @@ export default function Home() {
         <section ref={waitListRef} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
           <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">Join the Wait List</h3>
           <p className="text-base md:text-lg mb-6 max-w-2xl">
-            By joining the wait list we'll create an account for you upon soft launch. Players and Organizers sign up here.
+            By joining the wait list we'll create an account for you upon soft launch. Players Organizers sign up here.
           </p>
           <button 
             onClick={toggleWaitListForm} 

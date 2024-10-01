@@ -179,11 +179,40 @@ const WaitListForm: React.FC = () => {
                 </button>
                 <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
                   Join Waitlist with Mobile
-                </button>
-              </div>
-            )}
+            <SportsSelection 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <InterestedFeatures 
+              formData={formData} 
+              setFormData={updateFormData}
+            />
+            <GeographySelection 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <CompetitionLevels 
+              formData={formData} 
+              setFormData={updateFormData} 
+            />
+            <AdditionalFeatures
+             formData={formData}
+             setFormData={updateFormData}
+            />
 
-            {showVerificationInput && !signUpSuccess && (
+            <div className="flex flex-col space-y-2 mt-4">
+              <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                Join Waitlist with Google
+              </button>
+              <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                Join Waitlist with Facebook
+              </button>
+              <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                Join Waitlist with Mobile
+              </button>
+            </div>
+
+            {showVerificationInput && (
               <div className="mt-4">
                 <input
                   type="text"
