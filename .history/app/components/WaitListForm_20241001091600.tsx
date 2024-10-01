@@ -427,7 +427,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 type="button"
                 onClick={() => toggleRegionalLevel(level)}
                 className={`px-3 py-1 rounded ${
-                  formData.regionalLevels.includes(level)
+                  regionalLevels.includes(level)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -436,7 +436,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {formData.regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">
@@ -448,7 +448,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 type="button"
                 onClick={() => toggleOtherLevel(level)}
                 className={`px-3 py-1 rounded ${
-                  formData.competitionLevels.includes(level)
+                  competitionLevels.includes(level)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -457,13 +457,13 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Other Levels: {formData.competitionLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Other Levels: {competitionLevels.join(', ')}</p>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Any other features you'd like to see? (Optional)</label>
           <textarea
-            value={formData.additionalFeatures}
-            onChange={(e) => setFormData(prevData => ({ ...prevData, additionalFeatures: e.target.value }))}
+            value={additionalFeatures}
+            onChange={(e) => setAdditionalFeatures(e.target.value)}
             placeholder="Give us ideas we'll turn them into reality."
             className="w-full p-2 mb-2 bg-black/50 text-white rounded"
             rows={4}

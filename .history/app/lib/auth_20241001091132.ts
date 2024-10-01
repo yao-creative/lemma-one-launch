@@ -33,18 +33,12 @@ async function storeUserData(uid: string, formData: any, authProvider: string, e
       state: formData.state,
     },
     sports: formData.sports,
-    competitionLevels: formData.competitionLevels || [],
+    competitionLevels: formData.competitionLevels,
     interestedFeatures: formData.interestedFeatures,
     additionalFeatures: formData.additionalFeatures,
     signupMethod: authProvider as 'google' | 'facebook' | 'phone',
     signUpData: email || phoneNumber || facebookId || '',
   };
-
-  if (formData.showPlayerForm) {
-    waitListEntry.regionalLevels = formData.regionalLevels || [];
-  } else {
-    waitListEntry.tournamentLevels = formData.tournamentLevels || [];
-  }
 
   // Store user data in 'users' collection
   await setDoc(doc(db, 'users', uid), {
@@ -52,7 +46,6 @@ async function storeUserData(uid: string, formData: any, authProvider: string, e
     phoneNumber: phoneNumber || null,
     facebookId: facebookId || null,
     authProvider: authProvider,
-    userType: formData.showPlayerForm ? 'player' : 'organizer',
   });
 
   // Submit wait list entry

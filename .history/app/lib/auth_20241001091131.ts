@@ -33,26 +33,18 @@ async function storeUserData(uid: string, formData: any, authProvider: string, e
       state: formData.state,
     },
     sports: formData.sports,
-    competitionLevels: formData.competitionLevels || [],
+    competitionLevels: formData.competitionLevels,
     interestedFeatures: formData.interestedFeatures,
     additionalFeatures: formData.additionalFeatures,
     signupMethod: authProvider as 'google' | 'facebook' | 'phone',
     signUpData: email || phoneNumber || facebookId || '',
   };
 
-  if (formData.showPlayerForm) {
-    waitListEntry.regionalLevels = formData.regionalLevels || [];
-  } else {
-    waitListEntry.tournamentLevels = formData.tournamentLevels || [];
-  }
-
   // Store user data in 'users' collection
   await setDoc(doc(db, 'users', uid), {
     email: email || null,
     phoneNumber: phoneNumber || null,
-    facebookId: facebookId || null,
     authProvider: authProvider,
-    userType: formData.showPlayerForm ? 'player' : 'organizer',
   });
 
   // Submit wait list entry
@@ -76,9 +68,8 @@ export async function signUpWithFacebook(formData: any) {
   const provider = new FacebookAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
-    const facebookId = result.user.providerData[0]?.uid;
-    await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined, facebookId);
-    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined, result.user.phoneNumber || undefined, facebookId);
+    await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined);
+    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined, result.user.phoneNumber || undefined);
     return result.user;
   } catch (error) {
     console.error('Error signing up with Facebook:', error);

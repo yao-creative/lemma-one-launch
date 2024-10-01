@@ -116,13 +116,13 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   const isFormValid = () => {
     return (
       formData.name.trim() !== '' &&
-      formData.country !== '' &&
-      formData.state !== '' &&
+      country !== '' &&
+      state !== '' &&
       formData.sports.length > 0 &&
       formData.interestedFeatures.length > 2 && // Minimum 3 features
       formData.interestedFeatures.length < 6 && // Maximum 5 features
-      formData.competitionLevels.length > 0 &&
-      (showPlayerForm ? formData.regionalLevels.length > 0 : formData.tournamentLevels.length > 0)
+      regionalLevels.length > 0 &&
+      competitionLevels.length > 0
     );
   };
 
@@ -141,7 +141,11 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
 
     const completeFormData = {
       ...formData,
-      showPlayerForm,
+      country,
+      state,
+      regionalLevels,
+      competitionLevels,
+      additionalFeatures,
     };
 
     try {
@@ -182,7 +186,11 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
     try {
       const completeFormData = {
         ...formData,
-        showPlayerForm,
+        country,
+        state,
+        regionalLevels,
+        competitionLevels,
+        additionalFeatures,
       };
       const user = await confirmPhoneSignUp(confirmationResult, verificationCode, completeFormData);
       console.log('User signed up with phone:', user);
@@ -216,33 +224,40 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   };
 
   const toggleTournamentLevel = (level: string) => {
-    setFormData(prevData => {
-      if (prevData.tournamentLevels.includes(level)) {
-        return { ...prevData, tournamentLevels: prevData.tournamentLevels.filter(l => l !== level) };
-      } else {
-        return { ...prevData, tournamentLevels: [...prevData.tournamentLevels, level] };
+    setTournamentLevels(prevLevels => {
+      // Ensure at least one of amateur, semi-professional, or professional is selected
+      const isAmateur = level === 'amateur';
+      const isSemiProfessional = level === 'semi-professional';
+      const isProfessional = level === 'professional';
+
+      if (isAmateur || isSemiProfessional || isProfessional) {
+        const hasRegional = prevLevels.includes('regional');
+        if (!hasRegional) {
+          return [...prevLevels, 'regional', level]; // Add regional and the selected level
+        }
+        return prevLevels.includes(level) 
+          ? prevLevels.filter(l => l !== level) // Remove if already selected
+          : [...prevLevels, level]; // Add the selected level
       }
+
+      return prevLevels; // Return unchanged if not a valid level
     });
   };
 
   const toggleRegionalLevel = (level: string) => {
-    setFormData(prevData => {
-      if (prevData.regionalLevels.includes(level)) {
-        return { ...prevData, regionalLevels: prevData.regionalLevels.filter(l => l !== level) };
-      } else {
-        return { ...prevData, regionalLevels: [...prevData.regionalLevels, level] };
-      }
-    });
+    setRegionalLevels(prevLevels => 
+      prevLevels.includes(level) 
+        ? prevLevels.filter(l => l !== level) 
+        : [...prevLevels, level]
+    );
   };
 
   const toggleOtherLevel = (level: string) => {
-    setFormData(prevData => {
-      if (prevData.competitionLevels.includes(level)) {
-        return { ...prevData, competitionLevels: prevData.competitionLevels.filter(l => l !== level) };
-      } else {
-        return { ...prevData, competitionLevels: [...prevData.competitionLevels, level] };
-      }
-    });
+    setCompetitionLevels(prevLevels => 
+      prevLevels.includes(level) 
+        ? prevLevels.filter(l => l !== level) 
+        : [...prevLevels, level]
+    );
   };
 
   const handleOtherSportKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -257,17 +272,11 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
   };
 
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData(prevData => ({
-      ...prevData,
-      country: e.target.value,
-    }));
+    setCountry(e.target.value);
   };
 
   const handleStateChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setFormData(prevData => ({
-      ...prevData,
-      state: e.target.value,
-    }));
+    setState(e.target.value);
   };
 
   const handleOtherFeatureKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -299,7 +308,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
           <label htmlFor="country" className="block text-sm font-medium mb-2">Country</label>
           <select
             id="country"
-            value={formData.country}
+            value={country}
             onChange={handleCountryChange}
             className="w-full p-2 bg-black/50 text-white rounded"
             required
@@ -312,18 +321,18 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
         </div>
 
         {/* State Selection */}
-        {formData.country && (
+        {country && (
           <div className="mb-4">
             <label htmlFor="state" className="block text-sm font-medium mb-2">State/Region</label>
             <select
               id="state"
-              value={formData.state}
+              value={state}
               onChange={handleStateChange}
               className="w-full p-2 bg-black/50 text-white rounded"
               required
             >
               <option value="">Select a state/region</option>
-              {(statesByCountry[formData.country as keyof StatesByCountry] || []).map((s) => (
+              {(statesByCountry[country as keyof StatesByCountry] || []).map((s) => (
                 <option key={s} value={s}>{s}</option>
               ))}
             </select>
@@ -427,7 +436,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 type="button"
                 onClick={() => toggleRegionalLevel(level)}
                 className={`px-3 py-1 rounded ${
-                  formData.regionalLevels.includes(level)
+                  regionalLevels.includes(level)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -436,7 +445,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Interest Geography: {formData.regionalLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Interest Geography: {regionalLevels.join(', ')}</p>
         </div>
 
         <div className="mb-4">
@@ -448,7 +457,7 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
                 type="button"
                 onClick={() => toggleOtherLevel(level)}
                 className={`px-3 py-1 rounded ${
-                  formData.competitionLevels.includes(level)
+                  competitionLevels.includes(level)
                     ? 'bg-purple-600 text-white'
                     : 'bg-gray-200 text-gray-800'
                 }`}
@@ -457,13 +466,13 @@ const WaitListForm: React.FC<WaitListFormProps> = ({ showPlayerForm }) => {
               </button>
             ))}
           </div>
-          <p className="text-sm mt-2">Selected Other Levels: {formData.competitionLevels.join(', ')}</p>
+          <p className="text-sm mt-2">Selected Other Levels: {competitionLevels.join(', ')}</p>
         </div>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Any other features you'd like to see? (Optional)</label>
           <textarea
-            value={formData.additionalFeatures}
-            onChange={(e) => setFormData(prevData => ({ ...prevData, additionalFeatures: e.target.value }))}
+            value={additionalFeatures}
+            onChange={(e) => setAdditionalFeatures(e.target.value)}
             placeholder="Give us ideas we'll turn them into reality."
             className="w-full p-2 mb-2 bg-black/50 text-white rounded"
             rows={4}
