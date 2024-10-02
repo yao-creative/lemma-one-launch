@@ -75,8 +75,8 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
             <button
               type="button"
               onClick={() => setShowOtherPlayerFeatures(!showOtherPlayerFeatures)}
-              className={`px-3 py-1 rounded-full mt-2 bg-black/50 text-white ${
-                showOtherPlayerFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
+              className={`px-3 py-2 rounded-full text-sm font-medium ${
+                showOtherPlayerFeatures ? 'bg-purple-600 text-white' : 'bg-black/20 text-white hover:bg-black/30'
               }`}
             >
               Other
@@ -113,8 +113,8 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
             <button
               type="button"
               onClick={() => setShowOtherOrganizerFeatures(!showOtherOrganizerFeatures)}
-              className={`px-3 py-1 rounded-full mt-2 bg-black/20 text-white ${
-                showOtherOrganizerFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
+              className={`px-3 py-2 rounded-full text-sm font-medium ${
+                showOtherOrganizerFeatures ? 'bg-purple-600 text-white' : 'bg-black/20 text-white hover:bg-black/30'
               }`}
             >
               Other

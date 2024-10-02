@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Form from '@radix-ui/react-form';
-import { signUpWithGoogle, signUpWithFacebook, sendSignInLink, signUpWithEmailAndPassword } from '../lib/auth';
+import { signUpWithGoogle, signUpWithFacebook, signUpWithEmailAndPassword } from '../lib/auth';
 import { isFormValid } from './form/functions/Validation';
 
 // Import components from the correct path
@@ -55,7 +55,7 @@ const WaitListForm: React.FC = () => {
     return re.test(String(email).toLowerCase());
   };
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'email' | 'emailLink') => {
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'email') => {
     event.preventDefault();
     console.log('Form Data:', formData);
     const { isValid, errors } = isFormValid(formData);
@@ -70,7 +70,7 @@ const WaitListForm: React.FC = () => {
     }
   };
 
-  const handleSignUp = async (method: 'google' | 'facebook' | 'email' | 'emailLink') => {
+  const handleSignUp = async (method: 'google' | 'facebook' | 'email') => {
     try {
       let result;
       switch (method) {
@@ -91,23 +91,8 @@ const WaitListForm: React.FC = () => {
           }
           result = await signUpWithEmailAndPassword(email, password, formData);
           break;
-        case 'emailLink':
-          if (!email) {
-            alert('Email is required for email link sign-up.');
-            return;
-          }
-          if (!validateEmail(email)) {
-            alert('Please enter a valid email address.');
-            return;
-          }
-          result = await sendSignInLink(email, formData);
-          break;
       }
-      if (method === 'emailLink') {
-        setSignUpSuccess('email-link-sent');
-      } else {
-        setSignUpSuccess(method);
-      }
+      setSignUpSuccess(method);
     } catch (error) {
       console.error('Error signing up:', error);
       alert('An error occurred during sign-up. ' + error + ' Please try again.');
@@ -138,11 +123,7 @@ const WaitListForm: React.FC = () => {
             {signUpSuccess ? (
               <div className="mt-4 text-center text-green-600 bg-green-100 p-4 rounded-lg shadow">
                 <h3 className="text-lg font-semibold">Sign-up Successful!</h3>
-                {signUpSuccess === 'email-link-sent' ? (
-                  <p>A sign-in link has been sent to your email. Please check your inbox to complete the sign-up process.</p>
-                ) : (
-                  <p>You have successfully signed up with {signUpSuccess}. You'll be notified upon launch! :D</p>
-                )}
+                <p>You have successfully signed up with {signUpSuccess}. You'll be notified upon launch! :D</p>
               </div>
             ) : (
               <div className="flex flex-col space-y-2 mt-4">
@@ -174,18 +155,10 @@ const WaitListForm: React.FC = () => {
                   onClick={(e) => handleSubmit(e, 'email')}
                   className="bg-green-500 text-white p-2 rounded-lg flex items-center justify-center"
                 >
-                  Sign up with Email and Password
+                  <img src="/icons/email.svg" alt="Google" className="w-7 h-7 mr-2" /> Continue with Email and Password
                 </button>
                 
                 <div className="text-center">or</div>
-                <button
-                  type="button"
-                  onClick={(e) => handleSubmit(e, 'emailLink')}
-                  className="bg-blue-500 text-white p-2 rounded-lg flex items-center justify-center"
-                >
-                  <img src="/icons/email.svg" alt="Email" className="w-6 h-6 mr-2" />
-                  Sign up with Email Link
-                </button>
                 <button
                   type="button"
                   onClick={(e) => handleSubmit(e, 'google')}
