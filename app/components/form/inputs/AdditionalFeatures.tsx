@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormData } from '../WaitListForm';
+import { FormData } from '../../WaitListForm';
 
 interface AdditionalFeaturesProps {
   formData: FormData;

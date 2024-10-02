@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FormData } from '../WaitListForm';
+import { FormData } from '../../WaitListForm';
+import CustomCheckbox from '../ui/CustomCheckbox';
 
 interface InterestedFeaturesProps {
   formData: FormData;
@@ -61,25 +62,20 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
           <p className="text-sm mb-2">Player Features:</p>
           <div className="flex flex-wrap gap-2 mb-2">
             {playerFeatures.map((feature) => (
-              <button
+              <CustomCheckbox
                 key={feature}
-                type="button"
-                onClick={() => toggleFeature(feature, 'player')}
-                className={`px-3 py-1 rounded ${
-                  formData.playerInterestedFeatures.includes(feature)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {feature}
-              </button>
+                checked={formData.playerInterestedFeatures.includes(feature)}
+                onCheckedChange={() => toggleFeature(feature, 'player')}
+                label={feature}
+                disabled={!formData.playerInterestedFeatures.includes(feature) && formData.playerInterestedFeatures.length >= 5}
+              />
             ))}
           </div>
           {formData.playerInterestedFeatures.length < 5 && (
             <button
               type="button"
               onClick={() => setShowOtherPlayerFeatures(!showOtherPlayerFeatures)}
-              className={`px-3 py-1 rounded mt-2 ${
+              className={`px-3 py-1 rounded-full mt-2 bg-black/50 text-white ${
                 showOtherPlayerFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
               }`}
             >
@@ -93,7 +89,7 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
               onChange={(e) => setOtherPlayerFeatureInput(e.target.value)}
               onKeyDown={(e) => handleOtherFeatureKeyDown(e, 'player')}
               placeholder="Enter other player feature and press Enter to add"
-              className="w-full p-2 mt-2 bg-black/50 text-white rounded"
+              className="w-full p-2 mt-2 bg-black/20 text-white rounded"
             />
           )}
           <p className="text-sm mt-2">Selected Player Features ({formData.playerInterestedFeatures.length}/5): {formData.playerInterestedFeatures.join(', ')}</p>
@@ -104,25 +100,20 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
           <p className="text-sm mb-2 mt-4">Organizer Features:</p>
           <div className="flex flex-wrap gap-2 mb-2">
             {organizerFeatures.map((feature) => (
-              <button
+              <CustomCheckbox
                 key={feature}
-                type="button"
-                onClick={() => toggleFeature(feature, 'organizer')}
-                className={`px-3 py-1 rounded ${
-                  formData.organizerInterestedFeatures.includes(feature)
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-200 text-gray-800'
-                }`}
-              >
-                {feature}
-              </button>
+                checked={formData.organizerInterestedFeatures.includes(feature)}
+                onCheckedChange={() => toggleFeature(feature, 'organizer')}
+                label={feature}
+                disabled={!formData.organizerInterestedFeatures.includes(feature) && formData.organizerInterestedFeatures.length >= 5}
+              />
             ))}
           </div>
           {formData.organizerInterestedFeatures.length < 5 && (
             <button
               type="button"
               onClick={() => setShowOtherOrganizerFeatures(!showOtherOrganizerFeatures)}
-              className={`px-3 py-1 rounded mt-2 ${
+              className={`px-3 py-1 rounded-full mt-2 bg-black/20 text-white ${
                 showOtherOrganizerFeatures ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
               }`}
             >

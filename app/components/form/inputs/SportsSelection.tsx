@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { FormData } from '../WaitListForm';
+import * as Form from '@radix-ui/react-form';
+import { FormData } from '../../WaitListForm';
+import CustomCheckbox from '../ui/CustomCheckbox';
 
 interface SportsSelectionProps {
   formData: FormData;
@@ -32,30 +34,27 @@ const SportsSelection: React.FC<SportsSelectionProps> = ({ formData, setFormData
     }
   };
 
+  const predefinedSports = ['basketball', 'football', 'futsal', 'badminton', 'volleyball'];
+
   return (
-    <div className="mb-4">
-      <label className="block text-sm font-medium mb-2">Select Sports (Max 3)</label>
+    <Form.Field name="sports" className="mb-4">
+      <Form.Label className="block text-sm font-medium mb-2">Select Sports (Max 3)</Form.Label>
       <div className="flex flex-wrap gap-2 mb-2">
-        {['basketball', 'football', 'futsal', 'badminton', 'volleyball'].map((sport) => (
-          <button
+        {predefinedSports.map((sport) => (
+          <CustomCheckbox
             key={sport}
-            type="button"
-            onClick={() => toggleSport(sport)}
-            className={`px-3 py-1 rounded ${
-              formData.sports.includes(sport)
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-200 text-gray-800'
-            }`}
-          >
-            {sport}
-          </button>
+            checked={formData.sports.includes(sport)}
+            onCheckedChange={() => toggleSport(sport)}
+            label={sport.charAt(0).toUpperCase() + sport.slice(1)}
+            disabled={!formData.sports.includes(sport) && formData.sports.length >= 3}
+          />
         ))}
         {formData.sports.length < 3 && (
           <button
             type="button"
             onClick={() => setShowOtherSports(!showOtherSports)}
-            className={`px-3 py-1 rounded ${
-              showOtherSports ? 'bg-purple-600 text-white' : 'bg-gray-200 text-gray-800'
+            className={`px-3 py-2 rounded-full text-sm font-medium ${
+              showOtherSports ? 'bg-purple-600 text-white' : 'bg-black/20 text-white hover:bg-black/30'
             }`}
           >
             Other
@@ -63,17 +62,24 @@ const SportsSelection: React.FC<SportsSelectionProps> = ({ formData, setFormData
         )}
       </div>
       {showOtherSports && (
-        <input
-          type="text"
-          value={otherSportInput}
-          onChange={(e) => setOtherSportInput(e.target.value)}
-          onKeyDown={handleOtherSportKeyDown}
-          placeholder="Enter other sport and press Enter to add"
-          className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-        />
+        <Form.Field name="otherSport">
+          <Form.Control asChild>
+            <input
+              type="text"
+              value={otherSportInput}
+              onChange={(e) => setOtherSportInput(e.target.value)}
+              onKeyDown={handleOtherSportKeyDown}
+              placeholder="Enter other sport and press Enter to add"
+              className="w-full p-2 mb-2 bg-black/50 text-white rounded"
+            />
+          </Form.Control>
+        </Form.Field>
       )}
       <p className="text-sm mt-2">Selected ({formData.sports.length}/3): {formData.sports.join(', ')}</p>
-    </div>
+      <Form.Message match="valueMissing" className="text-red-500 text-sm mt-1">
+        Please select at least one sport.
+      </Form.Message>
+    </Form.Field>
   );
 };
 

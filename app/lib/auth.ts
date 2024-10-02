@@ -1,74 +1,37 @@
-import { auth, db } from './firebase';
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithPhoneNumber, ApplicationVerifier, RecaptchaVerifier } from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { submitWaitListEntry, WaitListEntry } from './firestore';
+import { auth } from './firebase';
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
+import { checkExistingUser, storeUserData } from '../components/form/functions/Submission';
+import { FormData } from '../components/WaitListForm';
 
-async function checkExistingUser(uid: string, email?: string, phoneNumber?: string, facebookId?: string) {
-  // Check if user exists by UID
-  const userDoc = await getDoc(doc(db, 'users', uid));
-  if (userDoc.exists()) {
-    throw new Error('User already signed up');
-  }
-
-  // Check for existing user by email, phone, or Facebook ID
-  const queries = [];
-  if (email) queries.push(where('email', '==', email));
-  if (phoneNumber) queries.push(where('phoneNumber', '==', phoneNumber));
-  if (facebookId) queries.push(where('facebookId', '==', facebookId));
-
-  for (const condition of queries) {
-    const q = query(collection(db, 'users'), condition);
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      throw new Error('User already exists with this email, phone number, or Facebook account');
-    }
-  }
-}
-
-async function storeUserData(uid: string, formData: any, authProvider: string, email?: string, phoneNumber?: string, facebookId?: string) {
-  const waitListEntry: WaitListEntry = {
-    userTypes: formData.userTypes,
-    location: {
-      country: formData.country,
-      state: formData.state,
-    },
-    sports: formData.sports,
-    competitionLevels: formData.competitionLevels || [],
-    interestedFeatures: formData.interestedFeatures,
-    additionalFeatures: formData.additionalFeatures,
-    signupMethod: authProvider as 'google' | 'facebook' | 'phone',
-    signUpData: email || phoneNumber || facebookId || '',
-    regionalLevels: formData.regionalLevels || [],
-    tournamentLevels: formData.tournamentLevels || [],
-  };
-
-  // Store user data in 'users' collection
-  await setDoc(doc(db, 'users', uid), {
-    email: email || null,
-    phoneNumber: phoneNumber || null,
-    facebookId: facebookId || null,
-    authProvider: authProvider,
-    userTypes: formData.userTypes,
-  });
-
-  // Submit wait list entry
-  await submitWaitListEntry(uid, waitListEntry);
-}
-
-export async function signUpWithGoogle(formData: any) {
+export async function signUpWithGoogle(formData: FormData) {
   const provider = new GoogleAuthProvider();
   try {
+    console.log('Initiating Google sign-in');
     const result = await signInWithPopup(auth, provider);
+    console.log('Google sign-in successful', result.user.uid);
+    
+    console.log('Checking for existing user');
     await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined);
+    console.log('User check completed');
+    
+    console.log('Storing user data');
     await storeUserData(result.user.uid, formData, 'google', result.user.email || undefined, result.user.phoneNumber || undefined);
+    console.log('User data stored successfully');
+    
     return result.user;
   } catch (error) {
     console.error('Error signing up with Google:', error);
+    if (error instanceof Error) {
+      console.error('Error details:', error.message);
+      if ('code' in error) {
+        console.error('Error code:', (error as any).code);
+      }
+    }
     throw error;
   }
 }
 
-export async function signUpWithFacebook(formData: any) {
+export async function signUpWithFacebook(formData: FormData) {
   const provider = new FacebookAuthProvider();
   try {
     const result = await signInWithPopup(auth, provider);
@@ -82,9 +45,8 @@ export async function signUpWithFacebook(formData: any) {
   }
 }
 
-export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
+export async function initiatePhoneSignUp(phoneNumber: string, formData: FormData) {
   try {
-    // Check if phone number is already in use before initiating sign-up
     await checkExistingUser('', undefined, phoneNumber);
     const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
       size: 'invisible',
@@ -100,7 +62,7 @@ export async function initiatePhoneSignUp(phoneNumber: string, formData: any) {
   }
 }
 
-export async function confirmPhoneSignUp(confirmationResult: any, verificationCode: string, formData: any) {
+export async function confirmPhoneSignUp(confirmationResult: any, verificationCode: string, formData: FormData) {
   try {
     const result = await confirmationResult.confirm(verificationCode);
     await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined);

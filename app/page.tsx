@@ -107,6 +107,8 @@ export default function Home() {
                 <li>Earn from Hosting Tournaments</li>
                 <li>Scale Your Tournaments</li>
                 <li>Find New Ways of Monetization</li>
+                <li>Pre-Tournament Hype</li>
+                <li>Super-Charge the Experience with Tournament Media</li>
                 <li>Grow Your Community</li>
                 <li>Grow the Sport You Love</li>
               </ul>

@@ -1,9 +1,10 @@
-import { db } from './firebase';
-import { doc, setDoc, serverTimestamp , getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../../../lib/firebase';
+import { doc, setDoc, serverTimestamp, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
+import { FormData } from '../../WaitListForm';
+import { isFormValid } from './Validation'; // Import the isFormValid function
 
-
-
-export interface WaitListEntry {
+export interface UserEntry {
+  name: string; // Add this line
   userTypes: ('player' | 'organizer')[];
   location: {
     country: string;
@@ -17,27 +18,14 @@ export interface WaitListEntry {
   signUpData: string;
   regionalLevels?: string[];
   tournamentLevels?: string[];
+  email: string | null;
+  phoneNumber: string | null;
+  facebookId: string | null;
+  authProvider: string;
+  timestamp: any; // Using 'any' for serverTimestamp()
 }
 
-export async function submitWaitListEntry(userId: string, data: WaitListEntry) {
-  try {
-    const { userTypes, location, ...rest } = data;
-    const docRef = doc(db, 'waitListEntries', `${location.country}_${location.state}`, userId);
-
-    await setDoc(docRef, {
-      userTypes,
-      ...rest,
-      timestamp: serverTimestamp(),
-    });
-
-    console.log('Wait list entry submitted successfully');
-  } catch (error) {
-    console.error('Error submitting wait list entry:', error);
-    throw error;
-  }
-}
-
-async function checkExistingUser(uid: string, email?: string, phoneNumber?: string, facebookId?: string) {
+export async function checkExistingUser(uid: string, email?: string, phoneNumber?: string, facebookId?: string) {
   // Check if user exists by UID
   const userDoc = await getDoc(doc(db, 'users', uid));
   if (userDoc.exists()) {
@@ -59,32 +47,44 @@ async function checkExistingUser(uid: string, email?: string, phoneNumber?: stri
   }
 }
 
-async function storeUserData(uid: string, formData: any, authProvider: string, email?: string, phoneNumber?: string, facebookId?: string) {
-  const waitListEntry: WaitListEntry = {
+export async function storeUserData(uid: string, formData: FormData, authProvider: string, email?: string, phoneNumber?: string, facebookId?: string) {
+  // Validate form data before proceeding
+  const { isValid, errors } = isFormValid(formData);
+  if (!isValid) {
+    throw new Error(`Form is not valid: ${errors.join(', ')}`);
+  }
+
+  const UserEntry: UserEntry = {
+    name: formData.name, // Add this line
     userTypes: formData.userTypes,
     location: {
       country: formData.country,
-      state: formData.state,
+      state: formData.region,
     },
     sports: formData.sports,
     competitionLevels: formData.competitionLevels || [],
-    interestedFeatures: formData.interestedFeatures,
+    interestedFeatures: [...formData.playerInterestedFeatures, ...formData.organizerInterestedFeatures],
     additionalFeatures: formData.additionalFeatures,
     signupMethod: authProvider as 'google' | 'facebook' | 'phone',
     signUpData: email || phoneNumber || facebookId || '',
     regionalLevels: formData.regionalLevels || [],
     tournamentLevels: formData.tournamentLevels || [],
-  };
-
-  // Store user data in 'users' collection
-  await setDoc(doc(db, 'users', uid), {
     email: email || null,
     phoneNumber: phoneNumber || null,
     facebookId: facebookId || null,
     authProvider: authProvider,
-    userTypes: formData.userTypes,
-  });
+    timestamp: serverTimestamp(),
+  };
 
-  // Submit wait list entry
-  await submitWaitListEntry(uid, waitListEntry);
+  // Store unified user data in 'users' collection
+  try {
+    await setDoc(doc(db, 'users', uid), UserEntry);
+    console.log('User data stored successfully');
+  } catch (error) {
+    console.error('Error storing user data:', error);
+    if (error instanceof Error && error.message.includes('permission-denied')) {
+      throw new Error('Unable to save user data due to permission issues. Please try again or contact support.');
+    }
+    throw error;
+  }
 }

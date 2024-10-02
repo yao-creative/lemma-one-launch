@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
+import * as Form from '@radix-ui/react-form';
 import { signUpWithGoogle, signUpWithFacebook, initiatePhoneSignUp, confirmPhoneSignUp } from '../lib/auth';
-import { auth } from '../lib/firebase';
+import { isFormValid } from './form/functions/Validation';
 
 // Import components from the correct path
-import UserTypeSelection from '../components/form/UserTypeSelection';
-import BasicInfo from '../components/form/BasicInfo';
-import SportsSelection from '../components/form/SportsSelection';
-import InterestedFeatures from '../components/form/InterestedFeatures';
-import GeographySelection from '../components/form/GeographySelection';
-import CompetitionLevels from '../components/form/CompetitionLevels';
-import AdditionalFeatures from '../components/form/AdditionalFeatures';
+import UserTypeSelection from './form/inputs/UserTypeSelection';
+import BasicInfo from './form/inputs/BasicInfo';
+import SportsSelection from './form/inputs/SportsSelection';
+import InterestedFeatures from './form/inputs/InterestedFeatures';
+import GeographySelection from './form/inputs/GeographySelection';
+import CompetitionLevels from './form/inputs/CompetitionLevels';
+import AdditionalFeatures from './form/inputs/AdditionalFeatures';
 
 // Update FormData interface
 export interface FormData {
@@ -28,8 +29,6 @@ export interface FormData {
 }
 
 // Create a type for the setFormData function
-type SetFormData = React.Dispatch<React.SetStateAction<FormData>>;
-
 const WaitListForm: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -51,44 +50,15 @@ const WaitListForm: React.FC = () => {
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [signUpSuccess, setSignUpSuccess] = useState<string | null>(null);
 
-  const isFormValid = () => {
-    const errors: string[] = [];
-
-    if (formData.name.trim() === '') errors.push('Name is required');
-    if (formData.country === '') errors.push('Country is required');
-    if (formData.region === '') errors.push('Region is required');
-    if (formData.sports.length === 0) errors.push('At least one sport must be selected');
-    if (formData.competitionLevels.length === 0) errors.push('At least one competition level must be selected');
-    if (formData.userTypes.length === 0) errors.push('At least one user type must be selected');
-
-    if (formData.userTypes.includes('player')) {
-      if (formData.playerInterestedFeatures.length < 3 || formData.playerInterestedFeatures.length > 5) {
-        errors.push('Players must select 3-5 interested features');
-      }
-      if (formData.regionalLevels.length === 0) errors.push('Players must select at least one regional level');
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'phone') => {
+    event.preventDefault();
+    console.log('Form Data:', formData);
+    const { isValid, errors } = isFormValid(formData);
+    if (isValid) {
+      await handleSignUp(method);
+    } else {
+      alert(`Form is not valid: ${errors.join(', ')}`);
     }
-
-    if (formData.userTypes.includes('organizer')) {
-      if (formData.organizerInterestedFeatures.length < 3 || formData.organizerInterestedFeatures.length > 5) {
-        errors.push('Organizers must select 3-5 interested features');
-      }
-      if (formData.tournamentLevels.length === 0) errors.push('Organizers must select at least one tournament level');
-    }
-
-    if (errors.length > 0) {
-      alert('Please correct the following errors:\n\n' + errors.join('\n'));
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prevData => ({
-      ...prevData,
-      [name]: value,
-    }));
   };
 
   const getPhoneNumberFromUser = async (): Promise<string> => {
@@ -99,8 +69,6 @@ const WaitListForm: React.FC = () => {
   };
 
   const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
-    if (!isFormValid()) return;
-
     try {
       let user;
       switch (method) {
@@ -125,7 +93,7 @@ const WaitListForm: React.FC = () => {
       setSignUpSuccess(method);
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('An error occurred during sign-up. Please try again.');
+      alert('An error occurred during sign-up.' + error + 'Please try again');
     }
   };
 
@@ -153,7 +121,7 @@ const WaitListForm: React.FC = () => {
 
   return (
     <div className="mt-8 w-full max-w-md">
-      <form className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
+      <Form.Root className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
         <UserTypeSelection formData={formData} setFormData={updateFormData} />
         
         {formData.userTypes.length > 0 && (
@@ -166,18 +134,31 @@ const WaitListForm: React.FC = () => {
             <AdditionalFeatures formData={formData} setFormData={updateFormData} />
 
             {signUpSuccess ? (
-              <div className="mt-4 text-center text-green-500">
-                You have successfully signed up with {signUpSuccess}. You'll be notified upon launch!
+              <div className="mt-4 text-center text-green-600 bg-green-100 p-4 rounded-lg shadow">
+                <h3 className="text-lg font-semibold">Sign-up Successful!</h3>
+                <p>You have successfully signed up with {signUpSuccess}. You'll be notified upon launch! :D</p>
               </div>
             ) : (
               <div className="flex flex-col space-y-2 mt-4">
-                <button type="button" onClick={() => handleSignUp('google')} className="bg-blue-600 text-white p-2 rounded-lg">
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, 'google')}
+                  className="bg-white/90 text-black p-2 rounded-lg"
+                >
                   Join Waitlist with Google
                 </button>
-                <button type="button" onClick={() => handleSignUp('facebook')} className="bg-blue-800 text-white p-2 rounded-lg">
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, 'facebook')}
+                  className="bg-blue-600 text-white p-2 rounded-lg"
+                >
                   Join Waitlist with Facebook
                 </button>
-                <button type="button" onClick={() => handleSignUp('phone')} className="bg-green-600 text-white p-2 rounded-lg">
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, 'phone')}
+                  className="bg-green-600 text-white p-2 rounded-lg"
+                >
                   Join Waitlist with Mobile
                 </button>
               </div>
@@ -185,21 +166,27 @@ const WaitListForm: React.FC = () => {
 
             {showVerificationInput && !signUpSuccess && (
               <div className="mt-4">
-                <input
-                  type="text"
-                  value={verificationCode}
-                  onChange={(e) => setVerificationCode(e.target.value)}
-                  placeholder="Enter verification code"
-                  className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-                />
-                <button type="button" onClick={handleVerifyCode} className="bg-green-600 text-white p-2 rounded-lg w-full">
-                  Verify Code
-                </button>
+                <Form.Field name="verificationCode">
+                  <Form.Control asChild>
+                    <input
+                      type="text"
+                      value={verificationCode}
+                      onChange={(e) => setVerificationCode(e.target.value)}
+                      placeholder="Enter verification code"
+                      className="w-full p-2 mb-2 bg-black/50 text-white rounded"
+                    />
+                  </Form.Control>
+                </Form.Field>
+                <Form.Submit asChild>
+                  <button type="button" onClick={handleVerifyCode} className="bg-green-600 text-white p-2 rounded-lg w-full">
+                    Verify Code
+                  </button>
+                </Form.Submit>
               </div>
             )}
           </>
         )}
-      </form>
+      </Form.Root>
       <div id="recaptcha-container"></div>
     </div>
   );
