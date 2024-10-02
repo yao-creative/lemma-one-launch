@@ -139,14 +139,14 @@ export default function Home() {
             Help us grow the sports community in South East Asia. Suggest features and give a pitch on the development on the Discord. Get updates on the development on Telegram and Whatsapp.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a href="https://discord.gg/q8RxTuKQXV" className="inline-block px-8 py-4 rounded-full text-lg bg-purple-600 text-white font-semibold hover:bg-purple-700 transition-colors duration-300 neon-button-purple">
-              Join Discord Channel
+            <a href="https://discord.gg/q8RxTuKQXV" className="inline-flex items-center px-8 py-4 rounded-full text-lg bg-[#5865F2] text-white font-semibold hover:bg-[#5865F2] transition-colors duration-300 bg-discord">
+              Discord Channel <Image src="/icons/discord.svg" alt="Discord" width={40} height={40} className="ml-2" />
             </a>
-            <a href="https://chat.whatsapp.com/FTkystI1sUFImgSzjzgezv" className="inline-block px-8 py-4 rounded-full text-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors duration-300 neon-button-green">
-              Join WhatsApp Channel
+            <a href="https://chat.whatsapp.com/FTkystI1sUFImgSzjzgezv" className="inline-flex items-center px-8 py-4 rounded-full text-lg bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors duration-300">
+              WhatsApp Channel <Image src="/icons/whatsapp.svg" alt="WhatsApp" width={40} height={40} className="ml-2" />
             </a>
-            <a href="https://t.me/+zumEyTka9SQwNjFk" className="inline-block px-8 py-4 rounded-full text-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300 neon-button-blue">
-              Join Telegram Channel
+            <a href="https://t.me/+zumEyTka9SQwNjFk" className="inline-flex items-center px-8 py-4 rounded-full text-lg bg-blue-500 text-white font-semibold hover:bg-blue-600 transition-colors duration-300">
+              Telegram Channel <Image src="/icons/telegram.svg" alt="Telegram" width={40} height={40} className="ml-2" />
             </a>
           </div>
         </section>
