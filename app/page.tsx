@@ -156,9 +156,15 @@ export default function Home() {
             Stay updated on the latest news, features, and updates from LemmaOne.
           </p>
           <div className="flex flex-col items-center">
-            <h4 className="text-xl md:text-2xl font-semibold font-open-sans mb-4">Instagram</h4>
+            <h4 className="text-xl md:text-2xl font-semibold font-open-sans mb-4">Instagram:</h4>
             <button onClick={() => window.open('https://www.instagram.com/the_lemma_one/', '_blank')} className="px-8 py-4 rounded-full text-lg font-semibold">
               <Image src="/icons/instagram.svg" alt="Instagram" width={100} height={100} />
+            </button>
+          </div>
+          <div className="flex flex-col items-center">
+            <h4 className="text-xl md:text-2xl font-semibold font-open-sans mb-4">Facebook:</h4>
+            <button onClick={() => window.open('https://www.facebook.com/profile.php?id=61566848275702', '_blank')} className="px-8 py-4 rounded-full text-lg font-semibold">
+              <Image src="/icons/facebook_bubble.svg" alt="Facebook" width={100} height={100} />
             </button>
           </div>
         </section>

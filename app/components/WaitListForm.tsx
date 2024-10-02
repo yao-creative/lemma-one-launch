@@ -49,12 +49,17 @@ const WaitListForm: React.FC = () => {
   const [showVerificationInput, setShowVerificationInput] = useState(false);
   const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [signUpSuccess, setSignUpSuccess] = useState<string | null>(null);
+  const [isFacebookComingSoon, setIsFacebookComingSoon] = useState(false); // New state for Facebook button
 
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'phone') => {
     event.preventDefault();
     console.log('Form Data:', formData);
     const { isValid, errors } = isFormValid(formData);
     if (isValid) {
+      if (method === 'facebook') {
+        setIsFacebookComingSoon(true); // Set Facebook button to coming soon
+        return; // Prevent further execution
+      }
       await handleSignUp(method);
     } else {
       alert(`Form is not valid: ${errors.join(', ')}`);
@@ -143,23 +148,29 @@ const WaitListForm: React.FC = () => {
                 <button
                   type="button"
                   onClick={(e) => handleSubmit(e, 'google')}
-                  className="bg-white/90 text-black p-2 rounded-lg"
+                  className="bg-white/90 text-black p-2 rounded-lg flex items-center justify-center"
                 >
-                  Join Waitlist with Google
+                  <img src="/icons/google.svg" alt="Google" className="w-7 h-7 mr-2" /> Continue with Google
                 </button>
-                <button
-                  type="button"
-                  onClick={(e) => handleSubmit(e, 'facebook')}
-                  className="bg-blue-600 text-white p-2 rounded-lg"
-                >
-                  Join Waitlist with Facebook
-                </button>
+                {isFacebookComingSoon ? (
+                  <div className="bg-gray-300 text-black p-2 rounded-lg text-center">
+                    Coming soon!
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={(e) => handleSubmit(e, 'facebook')}
+                    className="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center"
+                  >
+                    <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6 mr-2" /> Continue with Facebook
+                  </button>
+                )}
                 <button
                   type="button"
                   onClick={(e) => handleSubmit(e, 'phone')}
-                  className="bg-green-600 text-white p-2 rounded-lg"
+                  className="bg-green-600 text-white p-2 rounded-lg flex items-center justify-center"
                 >
-                  Join Waitlist with Mobile
+                  <img src="/icons/mobile.svg" alt="Mobile" className="w-6 h-6 mr-2" /> Continue with Mobile
                 </button>
               </div>
             )}
