@@ -1,7 +1,29 @@
 import { auth } from './firebase';
-import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, signInWithPhoneNumber, RecaptchaVerifier } from 'firebase/auth';
+import { signInWithPopup, GoogleAuthProvider, FacebookAuthProvider, sendSignInLinkToEmail as firebaseSendSignInLinkToEmail, createUserWithEmailAndPassword } from 'firebase/auth';
 import { checkExistingUser, storeUserData } from '../components/form/functions/Submission';
 import { FormData } from '../components/WaitListForm';
+
+// Add this new function for email/password sign-up
+export async function signUpWithEmailAndPassword(email: string, password: string, formData: FormData) {
+  try {
+    console.log('Initiating email/password sign-up');
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    console.log('Email/password sign-up successful', userCredential.user.uid);
+    
+    console.log('Checking for existing user');
+    await checkExistingUser(userCredential.user.uid, email);
+    console.log('User check completed');
+    
+    console.log('Storing user data');
+    await storeUserData(userCredential.user.uid, formData, 'email', email);
+    console.log('User data stored successfully');
+    
+    return userCredential.user;
+  } catch (error) {
+    console.error('Error signing up with email/password:', error);
+    throw error;
+  }
+}
 
 export async function signUpWithGoogle(formData: FormData) {
   const provider = new GoogleAuthProvider();
@@ -11,11 +33,11 @@ export async function signUpWithGoogle(formData: FormData) {
     console.log('Google sign-in successful', result.user.uid);
     
     console.log('Checking for existing user');
-    await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined);
+    await checkExistingUser(result.user.uid, result.user.email || undefined);
     console.log('User check completed');
     
     console.log('Storing user data');
-    await storeUserData(result.user.uid, formData, 'google', result.user.email || undefined, result.user.phoneNumber || undefined);
+    await storeUserData(result.user.uid, formData, 'google', result.user.email || undefined);
     console.log('User data stored successfully');
     
     return result.user;
@@ -36,8 +58,8 @@ export async function signUpWithFacebook(formData: FormData) {
   try {
     const result = await signInWithPopup(auth, provider);
     const facebookId = result.user.providerData[0]?.uid;
-    await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined, facebookId);
-    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined, result.user.phoneNumber || undefined, facebookId);
+    await checkExistingUser(result.user.uid, result.user.email || undefined, facebookId);
+    await storeUserData(result.user.uid, formData, 'facebook', result.user.email || undefined, facebookId);
     return result.user;
   } catch (error) {
     console.error('Error signing up with Facebook:', error);
@@ -45,31 +67,24 @@ export async function signUpWithFacebook(formData: FormData) {
   }
 }
 
-export async function initiatePhoneSignUp(phoneNumber: string, formData: FormData) {
+export async function sendSignInLink(email: string, formData: FormData) {
   try {
-    await checkExistingUser('', undefined, phoneNumber);
-    const appVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-      size: 'invisible',
-      callback: (r: any) => {
-        console.log('recaptcha callback', r);
-      }
-    });
-    const confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, appVerifier);
-    return confirmationResult;
+    console.log('Initiating email link sign-up');
+    const actionCodeSettings = {
+      url: process.env.NEXT_PUBLIC_CONFIRMATION_URL || 'http://localhost:3000/confirm',
+      handleCodeInApp: true,
+    };
+    
+    await firebaseSendSignInLinkToEmail(auth, email, actionCodeSettings);
+    
+    // Save the email and form data locally so you can access it to complete the sign-up process
+    window.localStorage.setItem('emailForSignIn', email);
+    window.localStorage.setItem('formDataForSignIn', JSON.stringify(formData));
+    
+    console.log('Sign-in link sent to email');
+    return true;
   } catch (error) {
-    console.error('Error initiating phone sign-up:', error);
-    throw error;
-  }
-}
-
-export async function confirmPhoneSignUp(confirmationResult: any, verificationCode: string, formData: FormData) {
-  try {
-    const result = await confirmationResult.confirm(verificationCode);
-    await checkExistingUser(result.user.uid, result.user.email || undefined, result.user.phoneNumber || undefined);
-    await storeUserData(result.user.uid, formData, 'phone', result.user.email || undefined, result.user.phoneNumber || undefined);
-    return result.user;
-  } catch (error) {
-    console.error('Error confirming phone sign-up:', error);
+    console.error('Error sending sign-in link to email:', error);
     throw error;
   }
 }

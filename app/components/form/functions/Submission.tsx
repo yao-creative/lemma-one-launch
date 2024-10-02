@@ -14,18 +14,17 @@ export interface UserEntry {
   competitionLevels: string[];
   interestedFeatures: string[];
   additionalFeatures?: string;
-  signupMethod: 'google' | 'facebook' | 'phone';
+  signupMethod: 'google' | 'facebook' | 'email';
   signUpData: string;
   regionalLevels?: string[];
   tournamentLevels?: string[];
   email: string | null;
-  phoneNumber: string | null;
   facebookId: string | null;
   authProvider: string;
   timestamp: any; // Using 'any' for serverTimestamp()
 }
 
-export async function checkExistingUser(uid: string, email?: string, phoneNumber?: string, facebookId?: string) {
+export async function checkExistingUser(uid: string, email?: string, facebookId?: string) {
   // Check if user exists by UID
   const userDoc = await getDoc(doc(db, 'users', uid));
   if (userDoc.exists()) {
@@ -35,19 +34,18 @@ export async function checkExistingUser(uid: string, email?: string, phoneNumber
   // Check for existing user by email, phone, or Facebook ID
   const queries = [];
   if (email) queries.push(where('email', '==', email));
-  if (phoneNumber) queries.push(where('phoneNumber', '==', phoneNumber));
   if (facebookId) queries.push(where('facebookId', '==', facebookId));
 
   for (const condition of queries) {
     const q = query(collection(db, 'users'), condition);
     const querySnapshot = await getDocs(q);
     if (!querySnapshot.empty) {
-      throw new Error('User already exists with this email, phone number, or Facebook account');
+      throw new Error('User already exists with this email or Facebook account');
     }
   }
 }
 
-export async function storeUserData(uid: string, formData: FormData, authProvider: string, email?: string, phoneNumber?: string, facebookId?: string) {
+export async function storeUserData(uid: string, formData: FormData, authProvider: string, email?: string, facebookId?: string) {
   // Validate form data before proceeding
   const { isValid, errors } = isFormValid(formData);
   if (!isValid) {
@@ -65,12 +63,11 @@ export async function storeUserData(uid: string, formData: FormData, authProvide
     competitionLevels: formData.competitionLevels || [],
     interestedFeatures: [...formData.playerInterestedFeatures, ...formData.organizerInterestedFeatures],
     additionalFeatures: formData.additionalFeatures,
-    signupMethod: authProvider as 'google' | 'facebook' | 'phone',
-    signUpData: email || phoneNumber || facebookId || '',
+    signupMethod: authProvider as 'google' | 'facebook' | 'email',
+    signUpData: email || facebookId || '',
     regionalLevels: formData.regionalLevels || [],
     tournamentLevels: formData.tournamentLevels || [],
     email: email || null,
-    phoneNumber: phoneNumber || null,
     facebookId: facebookId || null,
     authProvider: authProvider,
     timestamp: serverTimestamp(),

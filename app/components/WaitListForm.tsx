@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Form from '@radix-ui/react-form';
-import { signUpWithGoogle, signUpWithFacebook, initiatePhoneSignUp, confirmPhoneSignUp } from '../lib/auth';
+import { signUpWithGoogle, signUpWithFacebook, sendSignInLink, signUpWithEmailAndPassword } from '../lib/auth';
 import { isFormValid } from './form/functions/Validation';
 
 // Import components from the correct path
@@ -44,21 +44,25 @@ const WaitListForm: React.FC = () => {
     additionalFeatures: '',
     userTypes: []
   });
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [verificationCode, setVerificationCode] = useState('');
-  const [showVerificationInput, setShowVerificationInput] = useState(false);
-  const [confirmationResult, setConfirmationResult] = useState<any>(null);
   const [signUpSuccess, setSignUpSuccess] = useState<string | null>(null);
-  const [isFacebookComingSoon, setIsFacebookComingSoon] = useState(false); // New state for Facebook button
+  const [isFacebookComingSoon, setIsFacebookComingSoon] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'phone') => {
+  const validateEmail = (email: string) => {
+    const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'email' | 'emailLink') => {
     event.preventDefault();
     console.log('Form Data:', formData);
     const { isValid, errors } = isFormValid(formData);
     if (isValid) {
       if (method === 'facebook') {
-        setIsFacebookComingSoon(true); // Set Facebook button to coming soon
-        return; // Prevent further execution
+        setIsFacebookComingSoon(true);
+        return;
       }
       await handleSignUp(method);
     } else {
@@ -66,54 +70,47 @@ const WaitListForm: React.FC = () => {
     }
   };
 
-  const getPhoneNumberFromUser = async (): Promise<string> => {
-    return new Promise((resolve) => {
-      const phoneNumber = prompt('Please enter your phone number with country code (e.g., +1234567890):');
-      resolve(phoneNumber || '');
-    });
-  };
-
-  const handleSignUp = async (method: 'google' | 'facebook' | 'phone') => {
+  const handleSignUp = async (method: 'google' | 'facebook' | 'email' | 'emailLink') => {
     try {
-      let user;
+      let result;
       switch (method) {
         case 'google':
-          user = await signUpWithGoogle(formData);
+          result = await signUpWithGoogle(formData);
           break;
         case 'facebook':
-          user = await signUpWithFacebook(formData);
+          result = await signUpWithFacebook(formData);
           break;
-        case 'phone':
-          const phoneNumber = await getPhoneNumberFromUser();
-          if (!phoneNumber) {
-            alert('Phone number is required for phone sign-up.');
+        case 'email':
+          if (!email || !password) {
+            alert('Email and password are required for email sign-up.');
             return;
           }
-          setPhoneNumber(phoneNumber);
-          const confirmation = await initiatePhoneSignUp(phoneNumber, formData);
-          setConfirmationResult(confirmation);
-          setShowVerificationInput(true);
-          return;
+          if (!validateEmail(email)) {
+            alert('Please enter a valid email address.');
+            return;
+          }
+          result = await signUpWithEmailAndPassword(email, password, formData);
+          break;
+        case 'emailLink':
+          if (!email) {
+            alert('Email is required for email link sign-up.');
+            return;
+          }
+          if (!validateEmail(email)) {
+            alert('Please enter a valid email address.');
+            return;
+          }
+          result = await sendSignInLink(email, formData);
+          break;
       }
-      setSignUpSuccess(method);
+      if (method === 'emailLink') {
+        setSignUpSuccess('email-link-sent');
+      } else {
+        setSignUpSuccess(method);
+      }
     } catch (error) {
       console.error('Error signing up:', error);
-      alert('An error occurred during sign-up.' + error + 'Please try again');
-    }
-  };
-
-  const handleVerifyCode = async () => {
-    if (!confirmationResult) {
-      alert('Please request a verification code first.');
-      return;
-    }
-
-    try {
-      await confirmPhoneSignUp(confirmationResult, verificationCode, formData);
-      setSignUpSuccess('phone');
-    } catch (error) {
-      console.error('Error verifying code:', error);
-      alert('Invalid verification code. Please try again.');
+      alert('An error occurred during sign-up. ' + error + ' Please try again.');
     }
   };
 
@@ -141,10 +138,54 @@ const WaitListForm: React.FC = () => {
             {signUpSuccess ? (
               <div className="mt-4 text-center text-green-600 bg-green-100 p-4 rounded-lg shadow">
                 <h3 className="text-lg font-semibold">Sign-up Successful!</h3>
-                <p>You have successfully signed up with {signUpSuccess}. You'll be notified upon launch! :D</p>
+                {signUpSuccess === 'email-link-sent' ? (
+                  <p>A sign-in link has been sent to your email. Please check your inbox to complete the sign-up process.</p>
+                ) : (
+                  <p>You have successfully signed up with {signUpSuccess}. You'll be notified upon launch! :D</p>
+                )}
               </div>
             ) : (
               <div className="flex flex-col space-y-2 mt-4">
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                  className="w-full p-2 rounded-full bg-black/50 text-white"
+                />
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Password"
+                    className="w-full p-2 rounded-full bg-black/50 text-white"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white"
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </button>
+                </div>
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, 'email')}
+                  className="bg-green-500 text-white p-2 rounded-lg flex items-center justify-center"
+                >
+                  Sign up with Email and Password
+                </button>
+                
+                <div className="text-center">or</div>
+                <button
+                  type="button"
+                  onClick={(e) => handleSubmit(e, 'emailLink')}
+                  className="bg-blue-500 text-white p-2 rounded-lg flex items-center justify-center"
+                >
+                  <img src="/icons/email.svg" alt="Email" className="w-6 h-6 mr-2" />
+                  Sign up with Email Link
+                </button>
                 <button
                   type="button"
                   onClick={(e) => handleSubmit(e, 'google')}
@@ -165,40 +206,11 @@ const WaitListForm: React.FC = () => {
                     <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6 mr-2" /> Continue with Facebook
                   </button>
                 )}
-                <button
-                  type="button"
-                  onClick={(e) => handleSubmit(e, 'phone')}
-                  className="bg-green-600 text-white p-2 rounded-lg flex items-center justify-center"
-                >
-                  <img src="/icons/mobile.svg" alt="Mobile" className="w-6 h-6 mr-2" /> Continue with Mobile
-                </button>
-              </div>
-            )}
-
-            {showVerificationInput && !signUpSuccess && (
-              <div className="mt-4">
-                <Form.Field name="verificationCode">
-                  <Form.Control asChild>
-                    <input
-                      type="text"
-                      value={verificationCode}
-                      onChange={(e) => setVerificationCode(e.target.value)}
-                      placeholder="Enter verification code"
-                      className="w-full p-2 mb-2 bg-black/50 text-white rounded"
-                    />
-                  </Form.Control>
-                </Form.Field>
-                <Form.Submit asChild>
-                  <button type="button" onClick={handleVerifyCode} className="bg-green-600 text-white p-2 rounded-lg w-full">
-                    Verify Code
-                  </button>
-                </Form.Submit>
               </div>
             )}
           </>
         )}
       </Form.Root>
-      <div id="recaptcha-container"></div>
     </div>
   );
 };
