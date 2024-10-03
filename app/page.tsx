@@ -6,6 +6,23 @@ import WaitListForm from './components/WaitListForm';
 import FAQSection from './components/FAQSection';
 import AboutSection from './components/AboutSection';
 
+function generateStructuredData() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "LemmaOne - Waitlist",
+    "applicationCategory": "SportsApplication",
+    "operatingSystem": "Web",
+    "url": "https://www.lemmaone.com",
+    "description": "Join the waitlist for LemmaOne, an all-in-one tournament platform for athletes and organizers.",
+    "potentialAction": {
+      "@type": "JoinAction",
+      "target": "https://www.lemmaone.com/waitlist",
+      "name": "Join Waitlist"
+    }
+  };
+}
+
 export default function Home() {
   const [menuOpen, setMenuOpen] = useState(false);
   const platformRef = useRef<HTMLElement>(null);
@@ -28,6 +45,11 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-darkBlue text-white relative overflow-hidden">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateStructuredData()) }}
+      />
+
       {/* Background layer with glass morphism effect */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="glassmorphism-bg"></div>
