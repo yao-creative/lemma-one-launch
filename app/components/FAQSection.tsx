@@ -20,7 +20,7 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "When are we planning to launch?",
-      answer: "We plan on launching end of October or sometime in November with initial features and then add more features as we grow."
+      answer: "We plan on launching end of October or sometime in November with initial features and then add more features as we grow depending on feedback and community interest."
     },
     {
       question: "Where are we planning to launch?",
