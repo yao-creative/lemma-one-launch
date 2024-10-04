@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Image from 'next/image';
+import GrowingButton from './ui/GrowingButton';
 
-const AboutSection: React.FC = () => {
+
+const AboutSection = forwardRef<HTMLElement>((props, ref) => {
   return (
-    <section className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
+    <section ref={ref} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
       <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">About Us</h3>
       <p className="text-base md:text-lg max-w-2xl mb-8">
         In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a sports community and a possibility for the next generation to realize their dreams in competitive sports.
@@ -15,8 +17,8 @@ const AboutSection: React.FC = () => {
             <Image
               src="/about/profile.jpg"
               alt="Yao"
-              layout="fill"
-              objectFit="cover"
+              fill
+              style={{ objectFit: 'cover' }}
               className="rounded-full"
             />
           </div>
@@ -25,16 +27,24 @@ const AboutSection: React.FC = () => {
           </p>
         </div>
         <div className="flex flex-row items-center justify-center mt-4">
-          <a href="https://www.linkedin.com/in/yi-yao-tan-9719301a3/" className="flex items-center mx-2">
+          <GrowingButton
+            onClick={() => window.open('https://www.linkedin.com/in/yi-yao-tan-9719301a3/', '_blank')}
+            className="flex items-center mx-2"
+          >
             <Image src="/icons/linkedin.svg" alt="LinkedIn" width={24} height={24} className="hover:opacity-80" />
-          </a>
-          <a href="mailto:yytanwork@gmail.com" className="flex items-center mx-2">
+          </GrowingButton>
+          <GrowingButton
+            onClick={() => window.open('mailto:yytanwork@gmail.com', '_blank')}
+            className="flex items-center mx-2"
+          >
             <Image src="/icons/email.svg" alt="Email" width={24} height={24} className="hover:opacity-80" />
-          </a>
+          </GrowingButton>
         </div>
       </div>
     </section>
   );
-};
+});
+
+AboutSection.displayName = 'AboutSection';
 
 export default AboutSection;

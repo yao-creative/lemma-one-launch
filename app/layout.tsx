@@ -13,13 +13,16 @@ export const metadata: Metadata = {
   description: "Join the waitlist for LemmaOne, an all-in-one tournament platform for athletes and organizers.",
   keywords: "Malaysia, South East Asia, tournament hosting, tournament platform, sports, athletes, organizers, badminton, basketball, football, volleyball",
   openGraph: {
-    title: "LemmaOne - All-in-One Tournament Platform for SEA - Waitlist",
+    title: {
+      default: "LemmaOne - All-in-One Tournament Platform",
+      template: "%s | LemmaOne",
+    },
     description: "Grow the sport you love with LemmaOne's sports hosting and immersive tournament experience.",
     url: "https://www.lemmaone.com",
     siteName: "LemmaOne",
     images: [
       {
-        url: "https://www.lemmaone.com/og-image.jpg",
+        url: "https://www.lemmaone.com/logo192.jpg",
         width: 1200,
         height: 630,
         alt: "LemmaOne Platform",
@@ -28,6 +31,13 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "LemmaOne - All-in-One Tournament Platform",
+    description: "Grow the sport you love with LemmaOne's sports hosting and immersive tournament experience.",
+    images: ["https://www.lemmaone.com/logo192.jpg"],
+  },
+
   
 };
 

@@ -15,7 +15,7 @@ const CustomCheckbox: React.FC<CustomCheckboxProps> = ({ checked, onCheckedChang
         checked={checked}
         onCheckedChange={onCheckedChange}
         disabled={disabled}
-        className={`w-auto min-w-[120px] px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+        className={`w-auto min-w-[120px] px-4 py-2 rounded-full text-sm font-medium transition-colors duration-300 transform hover:scale-110 ${
           checked
             ? 'bg-purple-600 text-white'
             : 'bg-white text-black hover:bg-gray-100'

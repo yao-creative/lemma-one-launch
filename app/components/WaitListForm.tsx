@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import { signUpWithGoogle, signUpWithFacebook, signUpWithEmailAndPassword } from '../lib/auth';
 import { isFormValid } from './form/functions/Validation';
+import GrowingButton from './ui/GrowingButton';
 
 // Import components from the correct path
 import UserTypeSelection from './form/inputs/UserTypeSelection';
@@ -142,42 +143,38 @@ const WaitListForm: React.FC = () => {
                     placeholder="Password"
                     className="w-full p-2 rounded-full bg-black/50 text-white"
                   />
-                  <button
-                    type="button"
+                  <GrowingButton
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white"
                   >
                     {showPassword ? "Hide" : "Show"}
-                  </button>
+                  </GrowingButton>
                 </div>
-                <button
-                  type="button"
+                <GrowingButton
                   onClick={(e) => handleSubmit(e, 'email')}
-                  className="bg-green-500 text-white p-2 rounded-lg flex items-center justify-center"
+                  className="bg-green-500 text-white p-2 rounded-lg flex items-center justify-center w-full"
                 >
                   <img src="/icons/email.svg" alt="Google" className="w-7 h-7 mr-2" /> Continue with Email and Password
-                </button>
+                </GrowingButton>
                 
                 <div className="text-center">or</div>
-                <button
-                  type="button"
+                <GrowingButton
                   onClick={(e) => handleSubmit(e, 'google')}
-                  className="bg-white/90 text-black p-2 rounded-lg flex items-center justify-center"
+                  className="bg-white/90 text-black p-2 rounded-lg flex items-center justify-center w-full"
                 >
                   <img src="/icons/google.svg" alt="Google" className="w-7 h-7 mr-2" /> Continue with Google
-                </button>
+                </GrowingButton>
                 {isFacebookComingSoon ? (
                   <div className="bg-gray-300 text-black p-2 rounded-lg text-center">
                     Coming soon!
                   </div>
                 ) : (
-                  <button
-                    type="button"
+                  <GrowingButton
                     onClick={(e) => handleSubmit(e, 'facebook')}
-                    className="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center"
+                    className="bg-blue-600 text-white p-2 rounded-lg flex items-center justify-center w-full"
                   >
                     <img src="/icons/facebook.svg" alt="Facebook" className="w-6 h-6 mr-2" /> Continue with Facebook
-                  </button>
+                  </GrowingButton>
                 )}
               </div>
             )}

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, forwardRef, useRef } from 'react';
 import Image from 'next/image';
 
 interface FAQ {
@@ -6,7 +6,7 @@ interface FAQ {
   answer: string | JSX.Element;
 }
 
-const FAQSection: React.FC = () => {
+const FAQSection = forwardRef<HTMLElement>((props, ref) => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
 
   const toggleFAQ = (index: number) => {
@@ -20,7 +20,7 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "When are we planning to launch?",
-      answer: "We plan on launching end of October or sometime in November with initial features and then add more features as we grow depending on feedback and community interest."
+      answer: "We plan on launching end of October or sometime in November with simple tournament hosting features and then add more features as we grow depending on feedback and community interest."
     },
     {
       question: "Where are we planning to launch?",
@@ -56,9 +56,8 @@ const FAQSection: React.FC = () => {
 
   ];
 
-
   return (
-    <section className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
+    <section ref={ref} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
       <h3 className="text-2xl md:text-3xl font-semibold font-nike mb-8">Frequently Asked Questions</h3>
       <div className="w-full max-w-2xl">
         {faqs.map((faq, index) => (
@@ -80,6 +79,8 @@ const FAQSection: React.FC = () => {
       </div>
     </section>
   );
-};
+});
+
+FAQSection.displayName = 'FAQSection';
 
 export default FAQSection;
