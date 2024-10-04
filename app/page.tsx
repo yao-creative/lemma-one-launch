@@ -60,7 +60,7 @@ export default function Home() {
       </div>
 
       <nav className="fixed top-0 left-0 right-0 z-50">
-        <div className="mx-auto max-w-6xl mt-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full flex justify-between items-center">
+        <div className="mx-auto max-w-6xl mt-4 px-6 py-3 bg-white/20 backdrop-blur-md rounded-full flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Image src="/logo192.png" alt="LemmaOne Logo" width={48} height={40} />
             <h1 className="text-2xl font-bold font-open-sans">LemmaOne</h1>

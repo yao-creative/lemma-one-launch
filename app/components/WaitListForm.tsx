@@ -27,6 +27,7 @@ export interface FormData {
   tournamentLevels: string[];
   additionalFeatures: string;
   userTypes: ("player" | "organizer")[];
+  honeypot: string; // Add this line
 }
 
 // Create a type for the setFormData function
@@ -43,7 +44,8 @@ const WaitListForm: React.FC = () => {
     regionalLevels: [],
     tournamentLevels: [],
     additionalFeatures: '',
-    userTypes: []
+    userTypes: [],
+    honeypot: '', // Add this line
   });
   const [signUpSuccess, setSignUpSuccess] = useState<string | null>(null);
   const [isFacebookComingSoon, setIsFacebookComingSoon] = useState(false);
@@ -59,6 +61,13 @@ const WaitListForm: React.FC = () => {
   const handleSubmit = async (event: React.MouseEvent<HTMLButtonElement>, method: 'google' | 'facebook' | 'email') => {
     event.preventDefault();
     console.log('Form Data:', formData);
+
+    // Check if honeypot field is filled
+    if (formData.honeypot !== '') {
+      console.log('Potential spam submission detected');
+      return; // Silently reject the submission
+    }
+
     const { isValid, errors } = isFormValid(formData);
     if (isValid) {
       if (method === 'facebook') {
@@ -110,6 +119,17 @@ const WaitListForm: React.FC = () => {
   return (
     <div className="mt-8 w-full max-w-md">
       <Form.Root className="bg-white/10 backdrop-blur-md p-6 rounded-lg">
+        <div style={{ display: 'none' }}>
+          <label htmlFor="honeypot">Leave this field empty</label>
+          <input
+            type="text"
+            id="honeypot"
+            name="honeypot"
+            value={formData.honeypot}
+            onChange={(e) => updateFormData({ honeypot: e.target.value })}
+          />
+        </div>
+
         <UserTypeSelection formData={formData} setFormData={updateFormData} />
         
         {formData.userTypes.length > 0 && (

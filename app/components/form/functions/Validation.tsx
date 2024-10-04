@@ -2,6 +2,12 @@ import { FormData } from '../../WaitListForm';
 
 export const isFormValid = (formData: FormData): { isValid: boolean; errors: string[] } => {
   const errors: string[] = [];
+
+  // Check honeypot field
+  if (formData.honeypot !== '') {
+    return { isValid: false, errors: ['Invalid submission'] };
+  }
+
   if (formData.name.trim() === '') errors.push('Name is required');
   if (formData.country === '') errors.push('Country is required');
   if (formData.region === '') errors.push('Region is required');
