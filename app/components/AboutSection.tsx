@@ -23,7 +23,7 @@ const AboutSection = forwardRef<HTMLElement>((props, ref) => {
             />
           </div>
           <p className="text-sm opacity-70 text-center md:text-left md:pr-4 max-w-prose">
-            Hi my name is Yao. I've been playing volleyball competitively since I was 14. I've competed in the largest national tournament when I was 17. After that, the notion of going pro for sports was almost non-existent in my country. I took a gamble and went abroad for a gap year. I ended up majoring in mathematics and computer science in university and, five years later, I'm back in this corner of the world to build things.
+            Hi my name is Yao. I've been playing volleyball competitively since I was 14. I've competed in the largest national tournament when I was 17. After that, the notion of going pro for sports was almost non-existent in my country. I took a gamble, in pursuit of a dream, and went abroad in France for a gap year. Having only 2 months of Duolingo and 150 under my belt, I emailed 40 different clubs with Google Translate. The first night in Paris, before even seeing the Eiffel Tower from afar, I found myself in a volleyball club which I enjoyed so much and stayed with them for the rest of the year. In the end, the French men won two Olympic titles in a row, I wasn't wrong; but, on the other hand, I didn't end up playing professionally. At least I learnt to speak fluent French from club volleyball. <br /> <br /> &nbsp;&nbsp;&nbsp;&nbsp;I ended up majoring in mathematics and computer science in university and, five years later, I'm back in this corner of the world to build things.
           </p>
         </div>
         <div className="flex flex-row items-center justify-center mt-4">
