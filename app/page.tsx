@@ -46,6 +46,7 @@ export default function Home() {
 
   const [playerSectionOpen, setPlayerSectionOpen] = useState(false);
   const [organizersSectionOpen, setOrganizersSectionOpen] = useState(false);
+  const [aboutSectionOpen, setAboutSectionOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-darkBlue text-white relative overflow-hidden">
@@ -133,8 +134,8 @@ export default function Home() {
                     <ul className="text-base max-w-2xl mb-4 list-disc list-inside text-left space-y-2">
                       <li>Up Your Game to a New Level</li>
                       <li>Join Tournaments</li>
-                      <li>Compete as Teams</li>
                       <li>Join Teams</li>
+                      <li>Compete as Teams</li>
                       <li>Get Discovered</li>
                       <li>Earn from Tournaments</li>
                     </ul>
@@ -244,7 +245,7 @@ export default function Home() {
           </p>
         </section>
 
-        <AboutSection ref={aboutRef} />
+        <AboutSection ref={aboutRef} isOpen={aboutSectionOpen} setIsOpen={setAboutSectionOpen} />
         <FAQSection ref={faqRef} />
       </main>
 
