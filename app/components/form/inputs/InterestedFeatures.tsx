@@ -1,11 +1,29 @@
 import React, { useState } from 'react';
 import { FormData } from '../../WaitListForm';
-import CustomCheckbox from '../ui/CustomCheckbox';
+import CustomCheckbox from '../../ui/CustomCheckbox';
 
 interface InterestedFeaturesProps {
   formData: FormData;
   setFormData: (updater: Partial<FormData> | ((prevData: FormData) => FormData)) => void;
 }
+
+export const playerFeatures = [
+  'Tournament Search', 'Team Matching', 'Ticketing', 'Ticketing Discounts', 
+  'In-Tournament Features and Updates', 'Pre-Tournament Previews', 
+  'Tournament Merch', 'Cancellation Policy', 'Rankings', 'Social Media', 
+  'Tournament Earnings', 'Player Profiles', 'Fan Space'
+] as const;
+
+export const organizerFeatures = [
+  'Tournament Hosting', 'Ticketing', 'Tournament Monetization', 
+  'Merchandise Sales', 'Waiting List', 'Cancellation Policy', 
+  'Tournament/ Organization Page', 'In-Tournament Features and Updates', 
+  'Post-Tournament Media', 'Social Media', 'Pre-Tournament Previews', 
+  'Fan Engagement'
+] as const;
+
+export type PlayerFeature = typeof playerFeatures[number];
+export type OrganizerFeature = typeof organizerFeatures[number];
 
 const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFormData }) => {
   const [showOtherPlayerFeatures, setShowOtherPlayerFeatures] = useState(false);
@@ -13,23 +31,11 @@ const InterestedFeatures: React.FC<InterestedFeaturesProps> = ({ formData, setFo
   const [otherPlayerFeatureInput, setOtherPlayerFeatureInput] = useState('');
   const [otherOrganizerFeatureInput, setOtherOrganizerFeatureInput] = useState('');
 
-  const playerFeatures = [
-    'Tournament Search', 'Team Matching', 'In-Tournament Features and Updates', 'Pre-Tournament Previews', 
-    'Tournament Merch', 'Ticketing', 'Cancellation Policy', 'Rankings', 'Social Media', 
-    'Tournament Earnings', 'Player Profiles', 'Fan Space'
-  ];
-
-  const organizerFeatures = [
-    'Tournament Hosting', 'Ticketing', 'Tournament Monetization', 'Merchandise Sales', 'Waiting List', 
-    'Cancellation Policy', 'Tournament/ Organization Page', 'In-Tournament Features and Updates', 'Post-Tournament Media', 'Social Media', 'Pre-Tournament Previews', 
-    'Fan Engagement'
-  ];
-
-  const toggleFeature = (feature: string, type: 'player' | 'organizer') => {
+  const toggleFeature = (feature: PlayerFeature | OrganizerFeature, type: 'player' | 'organizer') => {
     const key = type === 'player' ? 'playerInterestedFeatures' : 'organizerInterestedFeatures';
     setFormData((prevData) => {
       if (prevData[key].includes(feature)) {
-        return { ...prevData, [key]: prevData[key].filter((f: string) => f !== feature) };
+        return { ...prevData, [key]: prevData[key].filter((f) => f !== feature) };
       } else if (prevData[key].length < 5) {
         return { ...prevData, [key]: [...prevData[key], feature] };
       }

@@ -10,6 +10,8 @@ jest.mock('../lib/auth', () => ({
   signUpWithEmailAndPassword: jest.fn(),
 }));
 
+
+
 describe('WaitListForm', () => {
   beforeEach(() => {
     render(<WaitListForm />);

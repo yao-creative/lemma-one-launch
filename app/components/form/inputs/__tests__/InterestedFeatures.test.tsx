@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import InterestedFeatures from '../InterestedFeatures';
+import InterestedFeatures, { playerFeatures, organizerFeatures } from '../InterestedFeatures'; // Import features
 import { FormData } from '../../../WaitListForm';
 
 const mockSetFormData = jest.fn();
@@ -30,19 +30,19 @@ describe('InterestedFeatures', () => {
 
   it('allows selecting up to 5 player features', () => {
     render(<InterestedFeatures formData={defaultFormData} setFormData={mockSetFormData} />);
-    const playerFeatures = screen.getAllByText(/Tournament Search|Team Matching|In-Tournament Features and Updates|Pre-Tournament Previews|Tournament Merch/);
-    playerFeatures.slice(0, 5).forEach(feature => fireEvent.click(feature));
+    const playerFeatureElements = playerFeatures.map((feature: string) => screen.getByText(feature));
+    playerFeatureElements.slice(0, 5).forEach((element: HTMLElement) => fireEvent.click(element));
     expect(mockSetFormData).toHaveBeenCalledTimes(5);
-    fireEvent.click(playerFeatures[5]);
+    fireEvent.click(playerFeatureElements[5]);
     expect(mockSetFormData).toHaveBeenCalledTimes(5); // Should not increase
   });
 
   it('allows selecting up to 5 organizer features', () => {
     render(<InterestedFeatures formData={defaultFormData} setFormData={mockSetFormData} />);
-    const organizerFeatures = screen.getAllByText(/Tournament Hosting|Ticketing|Tournament Monetization|Merchandise Sales|Waiting List/);
-    organizerFeatures.slice(0, 5).forEach(feature => fireEvent.click(feature));
+    const organizerFeatureElements = organizerFeatures.map((feature: string) => screen.getByText(feature));
+    organizerFeatureElements.slice(0, 5).forEach((element: HTMLElement) => fireEvent.click(element));
     expect(mockSetFormData).toHaveBeenCalledTimes(5);
-    fireEvent.click(organizerFeatures[5]);
+    fireEvent.click(organizerFeatureElements[5]);
     expect(mockSetFormData).toHaveBeenCalledTimes(5); // Should not increase
   });
 
@@ -72,5 +72,25 @@ describe('InterestedFeatures', () => {
     render(<InterestedFeatures formData={formDataWithLessFeatures} setFormData={mockSetFormData} />);
     expect(screen.getByText('Selected Player Features (2/5): Feature 1, Feature 2')).toBeInTheDocument();
     // You might want to add an error message in the component for this case
+  });
+
+  // New test case to check for minimum feature selection
+  it('displays an error message when fewer than 3 player features are selected', () => {
+    const formDataWithLessFeatures = {
+      ...defaultFormData,
+      playerInterestedFeatures: ['Feature 1', 'Feature 2'],
+    };
+    render(<InterestedFeatures formData={formDataWithLessFeatures} setFormData={mockSetFormData} />);
+    expect(screen.getByText('Please select at least 3 player features.')).toBeInTheDocument();
+  });
+
+  // New test case to check for maximum feature selection
+  it('displays a message when the maximum number of player features is reached', () => {
+    const formDataWithMaxFeatures = {
+      ...defaultFormData,
+      playerInterestedFeatures: ['Feature 1', 'Feature 2', 'Feature 3', 'Feature 4', 'Feature 5'],
+    };
+    render(<InterestedFeatures formData={formDataWithMaxFeatures} setFormData={mockSetFormData} />);
+    expect(screen.getByText('Selected Player Features (5/5): Feature 1, Feature 2, Feature 3, Feature 4, Feature 5')).toBeInTheDocument();
   });
 });

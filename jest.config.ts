@@ -23,6 +23,12 @@ const config: Config = {
       tsconfig: 'tsconfig.json', // Specify the path to your tsconfig
     },
   },
+  reporters: [
+    "default",
+    ["jest-html-reporter", {
+      pageTitle: "Test Report"
+    }]
+  ]
 }
 
 // createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
