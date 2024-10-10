@@ -1,7 +1,7 @@
-import { checkExistingUser, storeUserData } from './Submission';
-import { db } from '../../../lib/firebase';
+import { checkExistingUser, storeUserData } from '../Submission';
+import { db } from '../../../../lib/firebase';
 import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
-import { isFormValid } from './Validation';
+import { isFormValid } from '../Validation';
 
 jest.mock('firebase/firestore');
 jest.mock('./Validation');
@@ -29,7 +29,7 @@ describe('Submission Functions', () => {
 
   describe('checkExistingUser', () => {
     it('should throw an error if user already exists by UID', async () => {
-      (getDoc as jest.Mock).mockResolvedValueOnce({ exists: () => true });
+      jest.mocked(getDoc).mockResolvedValueOnce({ exists: () => true } as any);
       
       await expect(checkExistingUser(mockUid)).rejects.toThrow('User already signed up');
     });

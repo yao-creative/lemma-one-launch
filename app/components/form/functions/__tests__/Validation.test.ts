@@ -1,5 +1,5 @@
-import { isFormValid } from './Validation';
-import { FormData } from '../../WaitListForm';
+import { isFormValid } from '../Validation';
+import { FormData } from '../../../WaitListForm';
 
 describe('isFormValid', () => {
   const validFormData: FormData = {
@@ -15,6 +15,7 @@ describe('isFormValid', () => {
     regionalLevels: ['Local'],
     tournamentLevels: [],
     additionalFeatures: '',
+    honeypot: '',
   };
 
   it('should return valid for a complete player form', () => {
@@ -50,6 +51,7 @@ describe('isFormValid', () => {
       regionalLevels: [],
       tournamentLevels: [],
       additionalFeatures: '',
+      honeypot: '',
     };
     const { isValid, errors } = isFormValid(invalidForm);
     expect(isValid).toBe(false);
