@@ -20,7 +20,7 @@ const auth = getAuth(firebase_app);
 const db = getFirestore(firebase_app);
 
 // Connect to emulators if in development or test environment
-if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
+if (process.env.NODE_ENV === 'test') {
   connectAuthEmulator(auth, 'http://localhost:3001');
   connectFirestoreEmulator(db, 'localhost', 3002);
 }
