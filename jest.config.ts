@@ -24,9 +24,12 @@ const config: Config = {
     },
   },
   reporters: [
-    "default",
+    "default", // This keeps the default console output
     ["jest-html-reporter", {
-      pageTitle: "Test Report"
+      pageTitle: "Test Report",
+      outputPath: "./test-report.html",  // Path where the HTML file will be generated
+      includeFailureMsg: true, // Include detailed error messages
+      includeConsoleLog: true // Include console.log statement
     }]
   ]
 }
