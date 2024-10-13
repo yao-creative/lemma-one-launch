@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LemmaOne Launch Page
+
+## Overview
+
+LemmaOne is an all-in-one sports tournament platform designed to connect athletes and organizers, providing a space to grow sports from amateur to semi-pro levels. This repository contains the code for the LemmaOne launch page, which serves as a waitlist and information hub for potential users.
+
+## Goals
+
+1. Introduce LemmaOne's concept to potential users
+2. Collect waitlist signups from both players and organizers
+3. Provide information about the platform's features and vision
+4. Build a community around the project
+5. Showcase the team behind LemmaOne
+
+## Features
+
+- Responsive design for various screen sizes
+- Waitlist signup form for players and organizers
+- Sections for platform information, community links, and FAQs
+- About section introducing the team
+- Social media and community channel links
+
+## Tech Stack
+
+- **Framework**: Next.js 14
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS
+- **Fonts**: Open Sans (custom font implementation)
+- **Backend**: Firebase (Authentication and Firestore)
+- **Deployment**: Vercel
+
+## Project Structure
+
+The main components of the project are:
+
+1. `app/page.tsx`: The main page component
+2. `app/components/`: Directory containing reusable components
+3. `app/layout.tsx`: The root layout component
+4. `app/globals.css`: Global styles
+5. `public/`: Static assets (images, icons)
+
+## Key Components
+
+- `WaitListForm`: Handles user signups for the waitlist
+- `FAQSection`: Displays frequently asked questions
+- `AboutSection`: Introduces the team behind LemmaOne
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Run the development server: `npm run dev`
+4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Deployment
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The project is set up for easy deployment on Vercel. The `next.config.js` file contains the necessary configuration for optimal performance and SEO.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+We welcome contributions to improve the launch page. Please feel free to submit issues or pull requests.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[MIT License](LICENSE)

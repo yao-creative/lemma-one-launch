@@ -13,7 +13,7 @@ const AboutSection = forwardRef<HTMLElement, AboutSectionProps>((props, ref) => 
     <section ref={ref} className="text-center flex flex-col items-center justify-center w-full max-w-4xl section-glass rounded-3xl p-8 my-16">
       <h3 className="text-2xl md:text-3xl font-semibold font-open-sans mb-4">About Us</h3>
       <p className="text-base md:text-lg max-w-2xl mb-8">
-        In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne is put together by a team of passionate athletes who want to build a sports community and a possibility for the next generation to realize their dreams in competitive sports.
+        In South East Asia, relative to the size of the population, especially that of the youth, and the fanbase for sports, there is a huge gap in both federation funding and professional funding for sports. LemmaOne envisions to build a strong and inclusive sports community and democratize access to competitive sports.
       </p>
       <div className="flex flex-col items-center w-full">
         <h3 

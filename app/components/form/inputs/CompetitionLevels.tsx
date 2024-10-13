@@ -1,7 +1,7 @@
 import React from 'react';
 import * as Form from '@radix-ui/react-form';
 import { FormData } from '../../WaitListForm';
-import CustomCheckbox from '../ui/CustomCheckbox';
+import CustomCheckbox from '../../ui/CustomCheckbox';
 
 interface CompetitionLevelsProps {
   formData: FormData;

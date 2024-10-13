@@ -1,6 +1,6 @@
 import { initializeApp, getApps } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
+import { getAuth, connectAuthEmulator } from 'firebase/auth';
+import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -18,5 +18,11 @@ let firebase_app = getApps().length === 0 ? initializeApp(firebaseConfig) : getA
 // Initialize Firebase services
 const auth = getAuth(firebase_app);
 const db = getFirestore(firebase_app);
+
+// Connect to emulators if in development or test environment
+if (process.env.NODE_ENV === 'test') {
+  connectAuthEmulator(auth, 'http://localhost:3001');
+  connectFirestoreEmulator(db, 'localhost', 3002);
+}
 
 export { firebase_app, auth, db };

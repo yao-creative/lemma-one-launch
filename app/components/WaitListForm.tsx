@@ -166,6 +166,7 @@ const WaitListForm: React.FC = () => {
                   <GrowingButton
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white"
+                    preventScroll={true}
                   >
                     {showPassword ? "Hide" : "Show"}
                   </GrowingButton>
